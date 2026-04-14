@@ -185,6 +185,19 @@
             box-shadow: 0 0 40px rgba(0,0,0,0.06);
         }
 
+        /* ---- Fix: Navbar positioning inside editor (BUG-011) ---- */
+        .page-preview .wc-navbar-transparent,
+        .page-preview .wc-navbar-modern {
+            position: relative !important;
+        }
+        .page-preview .wc-navbar-transparent {
+            background: rgba(15, 23, 42, 0.95) !important;
+        }
+        .page-preview .wc-navbar-transparent.wc-navbar-transparent--scrolled,
+        .page-preview .wc-navbar-modern.wc-navbar-modern--scrolled {
+            position: relative !important;
+        }
+
         /* ---- Section Wrapper ---- */
         .section-wrapper {
             position: relative;
