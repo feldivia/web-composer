@@ -20,7 +20,7 @@ class BlockResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
 
-    protected static ?string $navigationGroup = 'Diseno';
+    protected static ?string $navigationGroup = 'Diseño';
 
     protected static ?string $navigationLabel = 'Bloques';
 
@@ -45,7 +45,7 @@ class BlockResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Informacion del Bloque')
+                Forms\Components\Section::make('Información del Bloque')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nombre')
@@ -53,13 +53,13 @@ class BlockResource extends Resource
                             ->maxLength(255),
 
                         Forms\Components\Select::make('category')
-                            ->label('Categoria')
+                            ->label('Categoría')
                             ->options(Block::CATEGORIES)
                             ->required()
                             ->searchable(),
 
                         Forms\Components\Textarea::make('description')
-                            ->label('Descripcion')
+                            ->label('Descripción')
                             ->rows(2)
                             ->maxLength(500)
                             ->columnSpanFull(),
@@ -107,7 +107,7 @@ class BlockResource extends Resource
                     ->weight('bold'),
 
                 Tables\Columns\TextColumn::make('category')
-                    ->label('Categoria')
+                    ->label('Categoría')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'heroes' => 'primary',
@@ -124,7 +124,7 @@ class BlockResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('description')
-                    ->label('Descripcion')
+                    ->label('Descripción')
                     ->limit(60)
                     ->toggleable(isToggledHiddenByDefault: true),
 
@@ -143,7 +143,7 @@ class BlockResource extends Resource
             ->defaultGroup('category')
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
-                    ->label('Categoria')
+                    ->label('Categoría')
                     ->options(Block::CATEGORIES),
             ])
             ->actions([
@@ -155,12 +155,10 @@ class BlockResource extends Resource
                     ->modalWidth('5xl')
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel('Cerrar')
+                    ->modalCloseButton(true)
                     ->modalContent(function (Block $record): HtmlString {
                         $html = $record->content['html'] ?? '';
                         $css = $record->content['css'] ?? '';
-
-                        $escapedHtml = e($html);
-                        $escapedCss = e($css);
 
                         $iframeSrc = "data:text/html;charset=utf-8," . rawurlencode(
                             '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
@@ -171,7 +169,7 @@ class BlockResource extends Resource
                         );
 
                         return new HtmlString(
-                            '<iframe src="' . $iframeSrc . '" style="width:100%;height:500px;border:1px solid #e2e8f0;border-radius:8px;" sandbox="allow-same-origin"></iframe>'
+                            '<iframe src="' . $iframeSrc . '" style="width:100%;min-height:400px;max-height:70vh;border:1px solid #e2e8f0;border-radius:8px;" sandbox="allow-same-origin"></iframe>'
                         );
                     }),
 
@@ -181,19 +179,22 @@ class BlockResource extends Resource
                     ->color('gray')
                     ->requiresConfirmation()
                     ->modalHeading('Duplicar Bloque')
-                    ->modalDescription('Se creara una copia de este bloque con el nombre modificado.')
+                    ->modalDescription('Se creará una copia de este bloque con el nombre modificado.')
                     ->action(function (Block $record): void {
                         $newBlock = $record->replicate();
                         $newBlock->name = $record->name . ' (copia)';
                         $newBlock->save();
                     }),
 
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Editar'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Eliminar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados'),
                 ]),
             ]);
     }
