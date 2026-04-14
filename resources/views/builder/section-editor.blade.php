@@ -627,6 +627,49 @@
             transition: all 0.2s;
         }
         .edit-image-btn:hover { border-color: #6366f1; color: #6366f1; }
+        /* Background color controls */
+        .edit-bg-options {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .edit-bg-btn {
+            padding: 6px 10px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            color: #475569;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .edit-bg-btn:hover { border-color: #6366f1; color: #6366f1; }
+        .edit-bg-swatch {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+        }
+        .edit-bg-custom {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+            -webkit-appearance: none;
+            appearance: none;
+            overflow: hidden;
+        }
+        .edit-bg-custom::-webkit-color-swatch-wrapper { padding: 2px; }
+        .edit-bg-custom::-webkit-color-swatch { border: none; border-radius: 4px; }
 
         /* ---- Add Section Modal ---- */
         .modal-overlay {
@@ -1850,6 +1893,39 @@
                 var body = document.getElementById('editPanelBody');
                 body.innerHTML = '';
 
+                // Section background color control
+                var bgDiv = document.createElement('div');
+                bgDiv.className = 'edit-field';
+                bgDiv.innerHTML =
+                    '<div class="edit-field-label">Color de fondo de la sección</div>' +
+                    '<div class="edit-bg-options">' +
+                        '<button class="edit-bg-btn" data-bg="var(--color-background)" onclick="setSectionBg(this, \'var(--color-background)\')" title="Fondo del sitio">Sitio</button>' +
+                        '<button class="edit-bg-btn" data-bg="var(--color-primary)" onclick="setSectionBg(this, \'var(--color-primary)\')" title="Color primario">' +
+                            '<span class="edit-bg-swatch" style="background:' + (colors.primary || '#6366F1') + '"></span>' +
+                        '</button>' +
+                        '<button class="edit-bg-btn" data-bg="#F8FAFC" onclick="setSectionBg(this, \'#F8FAFC\')" title="Gris claro">' +
+                            '<span class="edit-bg-swatch" style="background:#F8FAFC;border:1px solid #e2e8f0"></span>' +
+                        '</button>' +
+                        '<button class="edit-bg-btn" data-bg="#0F172A" onclick="setSectionBg(this, \'#0F172A\')" title="Oscuro">' +
+                            '<span class="edit-bg-swatch" style="background:#0F172A"></span>' +
+                        '</button>' +
+                        '<button class="edit-bg-btn" data-bg="#FFFFFF" onclick="setSectionBg(this, \'#FFFFFF\')" title="Blanco">' +
+                            '<span class="edit-bg-swatch" style="background:#FFFFFF;border:1px solid #e2e8f0"></span>' +
+                        '</button>' +
+                        '<input type="color" class="edit-bg-custom" id="editBgCustom" value="#FFFFFF" onchange="setSectionBg(null, this.value)" title="Color personalizado">' +
+                    '</div>';
+                body.appendChild(bgDiv);
+
+                // Read current bg from section element
+                var wrappers = document.querySelectorAll('.section-wrapper');
+                if (wrappers[index]) {
+                    var secEl = wrappers[index].querySelector('section, nav, footer, header');
+                    if (secEl) {
+                        var currentBg = secEl.style.background || secEl.style.backgroundColor || '';
+                        if (currentBg) document.getElementById('editBgCustom').value = currentBg.startsWith('#') ? currentBg : '#FFFFFF';
+                    }
+                }
+
                 data.fields.forEach(function(field) {
                     var div = document.createElement('div');
                     div.className = 'edit-field';
@@ -1943,14 +2019,102 @@
 
                 document.getElementById('editPanel').classList.add('open');
 
-                // Highlight active section
+                // === Effects controls at the bottom of edit panel ===
+                var effectsDiv = document.createElement('div');
+                effectsDiv.className = 'edit-field';
+                effectsDiv.style.marginTop = '8px';
+                effectsDiv.style.borderTop = '1px solid #f1f5f9';
+                effectsDiv.style.paddingTop = '16px';
+
                 var wrappers = document.querySelectorAll('.section-wrapper');
+                var secEl = null;
+                if (wrappers[index]) {
+                    secEl = wrappers[index].querySelector('section, nav, footer, header, div:not(.section-toolbar)');
+                }
+                var curAnimate = secEl ? (secEl.getAttribute('data-animate') || '') : '';
+                var curDelay = secEl ? (secEl.getAttribute('data-animate-delay') || '') : '';
+                var curHover = secEl ? (secEl.getAttribute('data-hover') || '') : '';
+                var curParallax = secEl ? (secEl.getAttribute('data-parallax') || '') : '';
+
+                effectsDiv.innerHTML =
+                    '<div class="edit-field-label">Efectos de animación</div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+                        '<div>' +
+                            '<div style="font-size:11px;color:#94a3b8;margin-bottom:3px;">Al hacer scroll</div>' +
+                            '<select class="font-select" id="epAnimate" style="font-size:12px;padding:6px 8px;" onchange="applyEditEffect()">' +
+                                '<option value="">Sin efecto</option>' +
+                                '<option value="fade-up"' + (curAnimate === 'fade-up' ? ' selected' : '') + '>Fade Up</option>' +
+                                '<option value="fade-down"' + (curAnimate === 'fade-down' ? ' selected' : '') + '>Fade Down</option>' +
+                                '<option value="fade-in"' + (curAnimate === 'fade-in' ? ' selected' : '') + '>Fade In</option>' +
+                                '<option value="slide-left"' + (curAnimate === 'slide-left' ? ' selected' : '') + '>Slide Left</option>' +
+                                '<option value="slide-right"' + (curAnimate === 'slide-right' ? ' selected' : '') + '>Slide Right</option>' +
+                                '<option value="zoom-in"' + (curAnimate === 'zoom-in' ? ' selected' : '') + '>Zoom In</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div style="font-size:11px;color:#94a3b8;margin-bottom:3px;">Retardo</div>' +
+                            '<select class="font-select" id="epDelay" style="font-size:12px;padding:6px 8px;" onchange="applyEditEffect()">' +
+                                '<option value="">Sin retardo</option>' +
+                                '<option value="200"' + (curDelay === '200' ? ' selected' : '') + '>200ms</option>' +
+                                '<option value="400"' + (curDelay === '400' ? ' selected' : '') + '>400ms</option>' +
+                                '<option value="600"' + (curDelay === '600' ? ' selected' : '') + '>600ms</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div style="font-size:11px;color:#94a3b8;margin-bottom:3px;">Hover</div>' +
+                            '<select class="font-select" id="epHover" style="font-size:12px;padding:6px 8px;" onchange="applyEditEffect()">' +
+                                '<option value="">Sin efecto</option>' +
+                                '<option value="scale"' + (curHover === 'scale' ? ' selected' : '') + '>Escalar</option>' +
+                                '<option value="shadow"' + (curHover === 'shadow' ? ' selected' : '') + '>Sombra</option>' +
+                                '<option value="lift"' + (curHover === 'lift' ? ' selected' : '') + '>Elevar</option>' +
+                                '<option value="glow"' + (curHover === 'glow' ? ' selected' : '') + '>Brillo</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div style="font-size:11px;color:#94a3b8;margin-bottom:3px;">Parallax</div>' +
+                            '<select class="font-select" id="epParallax" style="font-size:12px;padding:6px 8px;" onchange="applyEditEffect()">' +
+                                '<option value="">Sin parallax</option>' +
+                                '<option value="0.1"' + (curParallax === '0.1' ? ' selected' : '') + '>Suave</option>' +
+                                '<option value="0.2"' + (curParallax === '0.2' ? ' selected' : '') + '>Medio</option>' +
+                                '<option value="0.3"' + (curParallax === '0.3' ? ' selected' : '') + '>Intenso</option>' +
+                            '</select>' +
+                        '</div>' +
+                    '</div>';
+                body.appendChild(effectsDiv);
+
+                // Highlight active section
                 wrappers.forEach(function(w) { w.classList.remove('active'); });
                 if (wrappers[index]) {
                     wrappers[index].classList.add('active');
                     wrappers[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             });
+        }
+
+        function applyEditEffect() {
+            if (editPanelIndex === -1) return;
+            var wrappers = document.querySelectorAll('.section-wrapper');
+            var secEl = wrappers[editPanelIndex] ? wrappers[editPanelIndex].querySelector('section, nav, footer, header, div:not(.section-toolbar)') : null;
+            if (!secEl) return;
+
+            var animate = document.getElementById('epAnimate').value;
+            var delay = document.getElementById('epDelay').value;
+            var hover = document.getElementById('epHover').value;
+            var parallax = document.getElementById('epParallax').value;
+
+            if (animate) secEl.setAttribute('data-animate', animate);
+            else secEl.removeAttribute('data-animate');
+
+            if (delay) secEl.setAttribute('data-animate-delay', delay);
+            else secEl.removeAttribute('data-animate-delay');
+
+            if (hover) secEl.setAttribute('data-hover', hover);
+            else secEl.removeAttribute('data-hover');
+
+            if (parallax) secEl.setAttribute('data-parallax', parallax);
+            else secEl.removeAttribute('data-parallax');
+
+            markDirty();
         }
 
         function createLinkRow(text, url, index) {
@@ -1985,6 +2149,25 @@
             window._editPanelImageKey = fieldKey;
             currentImageTarget = null; // Clear regular image target
             openImagePicker();
+        }
+
+        function setSectionBg(btn, color) {
+            if (editPanelIndex === -1) return;
+            var wrappers = document.querySelectorAll('.section-wrapper');
+            var wrapper = wrappers[editPanelIndex];
+            if (!wrapper) return;
+
+            var secEl = wrapper.querySelector('section, nav, footer, header');
+            if (secEl) {
+                secEl.style.background = color;
+                // If dark bg, switch text to white
+                if (color === '#0F172A' || color === 'var(--color-primary)') {
+                    secEl.style.color = '#F1F5F9';
+                } else {
+                    secEl.style.color = '';
+                }
+            }
+            markDirty();
         }
 
         function closeEditPanel() {
@@ -2440,11 +2623,27 @@
                 if (data.url || data.path) {
                     selectedImageUrl = data.url || data.path;
                     galleryCache = null; // Invalidate cache
-                    // Auto-apply if there's a target
+
+                    // Auto-apply: edit panel image field
+                    if (window._editPanelImageKey) {
+                        applySelectedImage();
+                        return;
+                    }
+
+                    // Auto-apply: direct image click in preview
                     if (currentImageTarget) {
                         currentImageTarget.src = selectedImageUrl;
                         markDirty();
                         closeImagePicker();
+                    } else {
+                        // Show confirmation that image was uploaded
+                        var dropzone = document.getElementById('ipDropzone');
+                        if (dropzone) {
+                            dropzone.innerHTML = '<div class="ip-dropzone-icon">&#10003;</div>' +
+                                '<div class="ip-dropzone-text" style="color:#10b981;font-weight:600;">Imagen subida correctamente</div>' +
+                                '<img src="' + selectedImageUrl + '" style="max-height:80px;border-radius:8px;margin-top:8px;">' +
+                                '<div class="ip-dropzone-hint">Haz clic en "Usar imagen" para aplicar</div>';
+                        }
                     }
                 } else {
                     alert('Error al subir la imagen');
