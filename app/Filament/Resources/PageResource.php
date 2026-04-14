@@ -25,9 +25,11 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Contenido';
+    protected static ?string $navigationGroup = 'Diseño';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Páginas';
+
+    protected static ?int $navigationSort = 0;
 
     /**
      * Solo Admin y Editor pueden acceder al recurso de páginas.

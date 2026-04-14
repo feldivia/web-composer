@@ -19,11 +19,13 @@ class PageTemplateResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
 
-    protected static ?string $navigationGroup = 'Diseno';
+    protected static ?string $navigationGroup = 'Diseño';
 
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationLabel = 'Templates';
+
+    protected static bool $shouldRegisterNavigation = false;
 
     /**
      * Solo Admin puede acceder a templates.
