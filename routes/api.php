@@ -24,6 +24,7 @@ Route::middleware(['web', 'auth', 'throttle:60,1'])->group(function () {
     // Section Library
     Route::get('/sections', [SectionLibraryController::class, 'index']);
     Route::get('/sections/{id}', [SectionLibraryController::class, 'show']);
+    Route::get('/sections/{id}/preview', [SectionLibraryController::class, 'preview']);
 
     // AI (stricter rate limit)
     Route::middleware('throttle:10,1')->group(function () {

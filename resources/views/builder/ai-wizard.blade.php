@@ -295,6 +295,197 @@
             transform: rotate(45deg) translate(-1px, -1px);
         }
 
+        /* Preview button on cards */
+        .catalog-card .preview-btn {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.25s;
+            z-index: 2;
+        }
+        .catalog-card:hover .preview-btn { opacity: 1; }
+        .catalog-card .preview-btn:hover {
+            background: rgba(124,58,237,0.35);
+            border-color: #a78bfa;
+            transform: scale(1.1);
+        }
+        .catalog-card .preview-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: rgba(255,255,255,0.7);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .catalog-card .preview-btn:hover svg { stroke: #e2e8f0; }
+
+        /* Preview Modal */
+        .preview-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .preview-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .preview-modal {
+            width: 90vw;
+            max-width: 1100px;
+            height: 80vh;
+            background: #1a1a2e;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.3s ease;
+        }
+        .preview-modal-overlay.active .preview-modal {
+            transform: translateY(0) scale(1);
+        }
+        .preview-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+        .preview-modal-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .preview-modal-title .pm-icon { font-size: 20px; }
+        .preview-modal-devices {
+            display: flex;
+            gap: 4px;
+        }
+        .preview-device-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .preview-device-btn:hover { background: rgba(255,255,255,0.1); }
+        .preview-device-btn.active {
+            background: rgba(124,58,237,0.25);
+            border-color: #7c3aed;
+        }
+        .preview-device-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: rgba(255,255,255,0.6);
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .preview-device-btn.active svg { stroke: #c4b5fd; }
+        .preview-modal-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .preview-modal-close:hover {
+            background: rgba(239,68,68,0.2);
+            border-color: rgba(239,68,68,0.4);
+        }
+        .preview-modal-close svg {
+            width: 16px; height: 16px;
+            stroke: rgba(255,255,255,0.6);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .preview-modal-close:hover svg { stroke: #f87171; }
+        .preview-modal-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #f1f5f9;
+            overflow: hidden;
+            position: relative;
+        }
+        .preview-iframe-wrap {
+            width: 100%;
+            height: 100%;
+            transition: width 0.4s cubic-bezier(.4,0,.2,1);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            background: #fff;
+        }
+        .preview-iframe-wrap.tablet { width: 768px; }
+        .preview-iframe-wrap.mobile { width: 375px; }
+        .preview-iframe-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        .preview-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        .preview-loading .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #7c3aed;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
         /* Selected sidebar */
         .selected-sidebar {
             position: sticky;
@@ -1027,9 +1218,17 @@
                     }
                     card.innerHTML =
                         '<div class="check-mark"></div>' +
+                        '<button class="preview-btn" title="Ver preview"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>' +
                         '<span class="card-icon">' + (sec.icon || '') + '</span>' +
                         '<div class="card-name">' + (sec.name || sec.id) + '</div>' +
                         '<div class="card-desc">' + (sec.description || '') + '</div>';
+                    // Preview button click (stop propagation to avoid toggling selection)
+                    (function(s, c) {
+                        c.querySelector('.preview-btn').onclick = function(e) {
+                            e.stopPropagation();
+                            openPreview(s.id, s.name || s.id, s.icon || '');
+                        };
+                    })(sec, card);
                     card.onclick = (function(s) {
                         return function() { toggleSection(s.id, s.name || s.id, s.icon || ''); };
                     })(sec);
@@ -1466,11 +1665,118 @@
         }
 
         // ============================================================
+        // Section Preview Modal
+        // ============================================================
+        function openPreview(sectionId, sectionName, sectionIcon) {
+            var overlay = document.getElementById('previewOverlay');
+            var title = document.getElementById('previewTitle');
+            var iframeWrap = document.getElementById('previewIframeWrap');
+            var loading = document.getElementById('previewLoading');
+
+            title.innerHTML = '<span class="pm-icon">' + (sectionIcon || '') + '</span> ' + sectionName;
+
+            // Reset to desktop
+            iframeWrap.className = 'preview-iframe-wrap';
+            var btns = document.querySelectorAll('.preview-device-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.toggle('active', btns[i].getAttribute('data-device') === 'desktop');
+            }
+
+            // Show loading, hide iframe
+            loading.style.display = 'flex';
+            var oldIframe = iframeWrap.querySelector('iframe');
+            if (oldIframe) oldIframe.remove();
+
+            // Show modal
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Create iframe
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = '/api/sections/' + encodeURIComponent(sectionId) + '/preview';
+            iframe.onload = function() {
+                loading.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+            iframeWrap.appendChild(iframe);
+        }
+
+        function closePreview() {
+            var overlay = document.getElementById('previewOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            // Remove iframe after transition
+            setTimeout(function() {
+                var iframe = document.querySelector('#previewIframeWrap iframe');
+                if (iframe) iframe.remove();
+            }, 350);
+        }
+
+        function setPreviewDevice(device) {
+            var wrap = document.getElementById('previewIframeWrap');
+            wrap.className = 'preview-iframe-wrap';
+            if (device === 'tablet') wrap.classList.add('tablet');
+            if (device === 'mobile') wrap.classList.add('mobile');
+
+            var btns = document.querySelectorAll('.preview-device-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.toggle('active', btns[i].getAttribute('data-device') === device);
+            }
+        }
+
+        // ============================================================
         // Init
         // ============================================================
         buildCatalog();
         updateProgress();
         updateNav();
+
+        // Preview modal events (deferred until DOM is ready)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close on Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closePreview();
+            });
+
+            // Close on overlay click
+            var overlay = document.getElementById('previewOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) closePreview();
+                });
+            }
+        });
     </script>
+
+    {{-- Preview Modal --}}
+    <div class="preview-modal-overlay" id="previewOverlay">
+        <div class="preview-modal">
+            <div class="preview-modal-header">
+                <div class="preview-modal-title" id="previewTitle"></div>
+                <div class="preview-modal-devices">
+                    <button class="preview-device-btn active" data-device="desktop" onclick="setPreviewDevice('desktop')" title="Desktop">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </button>
+                    <button class="preview-device-btn" data-device="tablet" onclick="setPreviewDevice('tablet')" title="Tablet">
+                        <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+                    </button>
+                    <button class="preview-device-btn" data-device="mobile" onclick="setPreviewDevice('mobile')" title="Mobile">
+                        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+                    </button>
+                </div>
+                <button class="preview-modal-close" onclick="closePreview()" title="Cerrar">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="preview-modal-body">
+                <div class="preview-iframe-wrap" id="previewIframeWrap"></div>
+                <div class="preview-loading" id="previewLoading">
+                    <div class="spinner"></div>
+                    <span>Cargando preview...</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

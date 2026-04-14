@@ -164,6 +164,55 @@ class SectionLibraryService
     }
 
     /**
+     * Retorna todas las secciones agrupadas por categoría, sin HTML/CSS (solo metadatos).
+     *
+     * Ideal para pasar al frontend (wizard, editor) donde solo se necesitan
+     * id, name, description, icon para construir el catálogo visual.
+     *
+     * @return array<string, array{name: string, sections: array}>
+     */
+    public static function allMetadata(): array
+    {
+        $sections = self::registry();
+        $grouped = [];
+
+        $categoryNames = [
+            'heroes' => 'Heroes',
+            'services' => 'Servicios',
+            'about' => 'Acerca de',
+            'trust' => 'Confianza / Stats',
+            'testimonials' => 'Testimonios',
+            'pricing' => 'Precios',
+            'faq' => 'Preguntas Frecuentes',
+            'contact' => 'Contacto',
+            'cta' => 'Llamada a la Acción',
+            'gallery' => 'Galería',
+            'quote' => 'Citas',
+            'footer' => 'Footer',
+            'marquee' => 'Marquee',
+        ];
+
+        foreach ($sections as $section) {
+            $cat = $section['category'];
+            if (!isset($grouped[$cat])) {
+                $grouped[$cat] = [
+                    'name' => $categoryNames[$cat] ?? ucfirst($cat),
+                    'sections' => [],
+                ];
+            }
+            $grouped[$cat]['sections'][] = [
+                'id' => $section['id'],
+                'name' => $section['name'],
+                'category' => $section['category'],
+                'description' => $section['description'],
+                'icon' => $section['icon'],
+            ];
+        }
+
+        return $grouped;
+    }
+
+    /**
      * Retorna el CSS combinado para un conjunto de secciones.
      *
      * Cada sección tiene CSS con clases prefijadas (.wc-{id}-) para evitar conflictos.

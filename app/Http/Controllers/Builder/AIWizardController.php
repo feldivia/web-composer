@@ -33,7 +33,7 @@ class AIWizardController extends Controller
         return view('builder.ai-wizard', [
             'page' => $page,
             'fonts' => config('webcomposer.fonts'),
-            'sectionLibrary' => SectionLibraryService::all(),
+            'sectionLibrary' => SectionLibraryService::allMetadata(),
         ]);
     }
 

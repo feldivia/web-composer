@@ -80,7 +80,7 @@ class SectionEditorController extends Controller
             'fonts' => $fonts,
             'businessName' => $businessName,
             'businessDescription' => $businessDescription,
-            'library' => SectionLibraryService::all(),
+            'library' => SectionLibraryService::allMetadata(),
         ]);
     }
 }

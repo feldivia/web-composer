@@ -84,4 +84,48 @@ class SectionLibraryController extends Controller
             'data' => $section,
         ]);
     }
+
+    /**
+     * Retorna un preview HTML renderizado de una sección con contenido default.
+     *
+     * GET /api/sections/{id}/preview
+     *
+     * @param string $id Identificador de la sección
+     * @return \Illuminate\Http\Response|JsonResponse
+     */
+    public function preview(string $id)
+    {
+        $section = SectionLibraryService::get($id);
+
+        if ($section === null) {
+            return response()->json(['error' => 'Sección no encontrada'], 404);
+        }
+
+        // Colores y fuentes por defecto para el preview
+        $defaultColors = [
+            'primary' => '#6366F1',
+            'secondary' => '#0EA5E9',
+            'accent' => '#F59E0B',
+            'background' => '#FFFFFF',
+            'text' => '#1E293B',
+        ];
+        $defaultFonts = [
+            'heading' => 'Space Grotesk',
+            'body' => 'Inter',
+        ];
+
+        // Renderizar con contenido default (placeholders vacíos = usa defaults)
+        $html = SectionLibraryService::render($id, [], $defaultColors, $defaultFonts);
+        $css = $section['css'] ?? '';
+
+        return response(
+            '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+            . '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+            . '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">'
+            . '<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;background:#fff;}'
+            . $css . '</style></head><body>' . $html . '</body></html>',
+            200,
+            ['Content-Type' => 'text/html']
+        );
+    }
 }
