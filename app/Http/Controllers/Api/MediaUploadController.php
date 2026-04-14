@@ -39,7 +39,7 @@ class MediaUploadController extends Controller
 
         $result = array_map(function (string $file) {
             return [
-                'url' => Storage::disk('public')->url($file),
+                'url' => '/storage/' . $file,
                 'name' => basename($file),
                 'size' => Storage::disk('public')->size($file),
             ];

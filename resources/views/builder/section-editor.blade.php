@@ -235,9 +235,27 @@
         .toolbar-btn.edit-btn { color: #6366f1; }
         .toolbar-btn.edit-btn:hover { background: #eef2ff; color: #4f46e5; }
         .toolbar-btn.danger:hover { background: #fef2f2; color: #ef4444; }
+        .toolbar-btn[title] {
+            position: relative;
+        }
         .toolbar-btn[title]::after {
             content: attr(title);
             display: none;
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #fff;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 120;
+        }
+        .toolbar-btn[title]:hover::after {
+            display: block;
         }
 
         /* Add section button between sections */
@@ -1098,7 +1116,7 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 Vista previa
             </a>
-            <a href="{{ route('builder.wizard', $page) }}" class="topbar-btn topbar-btn-ghost" title="Regenerar pagina completa con Wizard IA">
+            <a href="{{ route('builder.wizard', $page) }}" class="topbar-btn topbar-btn-ghost" title="Regenerar página completa con Wizard IA">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 Wizard IA
             </a>
@@ -1136,7 +1154,7 @@
                 @if ($index < count($renderedSections) - 1)
                     <div class="add-section-gap">
                         <button class="add-section-btn" onclick="openAddModal({{ $index + 1 }})">
-                            + Agregar seccion
+                            + Agregar sección
                         </button>
                     </div>
                 @endif
@@ -1145,7 +1163,7 @@
             {{-- Final add button --}}
             <div class="add-section-gap" style="opacity:1; padding:24px 0;">
                 <button class="add-section-btn" onclick="openAddModal(-1)">
-                    + Agregar seccion al final
+                    + Agregar sección al final
                 </button>
             </div>
         </div>
@@ -1251,7 +1269,7 @@
     <div class="modal-overlay" id="addSectionModal">
         <div class="modal-content">
             <div class="modal-title">
-                Agregar seccion
+                Agregar sección
                 <button class="modal-close" onclick="closeAddModal()">&times;</button>
             </div>
             <div id="modalSectionsList">
@@ -1263,7 +1281,7 @@
     {{-- Section Edit Panel --}}
     <div class="edit-panel" id="editPanel">
         <div class="edit-panel-header">
-            <div class="edit-panel-title" id="editPanelTitle">Editar seccion</div>
+            <div class="edit-panel-title" id="editPanelTitle">Editar sección</div>
             <button class="edit-panel-close" onclick="closeEditPanel()">&times;</button>
         </div>
         <div class="edit-panel-body" id="editPanelBody">
@@ -1298,7 +1316,7 @@
                 <div id="ipUploadTab">
                     <div class="ip-dropzone" id="ipDropzone">
                         <div class="ip-dropzone-icon">&#128247;</div>
-                        <div class="ip-dropzone-text">Arrastra una imagen aqui o haz clic para seleccionar</div>
+                        <div class="ip-dropzone-text">Arrastra una imagen aquí o haz clic para seleccionar</div>
                         <div class="ip-dropzone-hint">JPG, PNG, WebP, GIF — Max 10MB</div>
                         <input type="file" id="ipFileInput" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;">
                     </div>
@@ -1308,7 +1326,7 @@
                 </div>
                 <div id="ipGalleryTab" style="display:none;">
                     <div class="ip-gallery-grid" id="ipGalleryGrid"></div>
-                    <div class="ip-gallery-empty" id="ipGalleryEmpty" style="display:none;">No hay imagenes subidas aun</div>
+                    <div class="ip-gallery-empty" id="ipGalleryEmpty" style="display:none;">No hay imágenes subidas aún</div>
                 </div>
                 <div id="ipUrlTab" style="display:none;">
                     <p style="font-size:13px;color:#475569;margin-bottom:8px;">Ingresa la URL de una imagen externa:</p>
@@ -1329,13 +1347,13 @@
             Efectos
             <button class="style-panel-close" onclick="toggleEffectsPanel()">&times;</button>
         </div>
-        <p style="font-size:12px;color:#94a3b8;margin-bottom:16px;">Selecciona una seccion y aplica efectos de animacion.</p>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:16px;">Selecciona una sección y aplica efectos de animación.</p>
         <div id="effectsTarget" style="font-size:13px;color:#6366f1;font-weight:500;margin-bottom:16px;display:none;"></div>
 
         <div class="effect-group">
             <div class="effect-label">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                Animacion al hacer scroll
+                Animación al hacer scroll
             </div>
             <select class="effect-select" id="effectAnimate" onchange="applyEffect()">
                 <option value="">Ninguna</option>
@@ -1346,7 +1364,7 @@
                 <option value="fade-zoom">Zoom de entrada</option>
                 <option value="flip-up">Voltear hacia arriba</option>
             </select>
-            <div class="effect-hint">La seccion se anima cuando el usuario llega a ella</div>
+            <div class="effect-hint">La sección se anima cuando el usuario llega a ella</div>
         </div>
 
         <div class="effect-group">
@@ -1374,7 +1392,7 @@
                 <option value="lift">Elevar</option>
                 <option value="glow">Brillo</option>
             </select>
-            <div class="effect-hint">Efecto al pasar el mouse sobre la seccion</div>
+            <div class="effect-hint">Efecto al pasar el mouse sobre la sección</div>
         </div>
 
         <div class="effect-group">
@@ -1526,22 +1544,29 @@
             sectionIds[index] = sectionIds[newIndex];
             sectionIds[newIndex] = tempId;
 
-            // Swap DOM
+            // Swap DOM elements without page reload
             var preview = document.getElementById('pagePreview');
-            var wrappers = preview.querySelectorAll('.section-wrapper');
-            if (direction === -1 && wrappers[index] && wrappers[newIndex]) {
-                preview.insertBefore(wrappers[index], wrappers[newIndex]);
-            } else if (direction === 1 && wrappers[index] && wrappers[newIndex]) {
-                preview.insertBefore(wrappers[newIndex], wrappers[index]);
+            var wrappers = Array.from(preview.querySelectorAll('.section-wrapper'));
+            var movingEl = wrappers[index];
+            var targetEl = wrappers[newIndex];
+
+            if (direction === -1 && movingEl && targetEl) {
+                preview.insertBefore(movingEl, targetEl);
+            } else if (direction === 1 && movingEl && targetEl) {
+                if (targetEl.nextSibling) {
+                    preview.insertBefore(movingEl, targetEl.nextSibling);
+                } else {
+                    preview.appendChild(movingEl);
+                }
             }
 
-            // Rebuild since DOM order changed
-            rebuildPage();
+            rebindToolbarEvents();
+            buildSidebar();
             markDirty();
         }
 
         function deleteSection(index) {
-            if (!confirm('Eliminar esta seccion?')) return;
+            if (!confirm('Eliminar esta sección?')) return;
 
             sectionIds.splice(index, 1);
             rebuildPage();
@@ -1549,7 +1574,7 @@
         }
 
         function regenerateSection(index) {
-            showLoading('Regenerando seccion con IA...', 'Generando nuevo contenido');
+            showLoading('Regenerando sección con IA...', 'Generando nuevo contenido');
 
             fetch(@json(route('builder.wizard.generate', $page)), {
                 method: 'POST',
@@ -1586,7 +1611,7 @@
         }
 
         function rebuildPage() {
-            showLoading('Actualizando pagina...', 'Guardando cambios');
+            showLoading('Actualizando página...', 'Guardando cambios');
             savePage(function() {
                 window.location.reload();
             });
@@ -1681,7 +1706,7 @@
 
         function addSection(sectionId) {
             closeAddModal();
-            showLoading('Agregando seccion...', 'Generando contenido con IA');
+            showLoading('Agregando sección...', 'Generando contenido con IA');
 
             fetch(@json(route('builder.sections.add', $page)), {
                 method: 'POST',
@@ -1726,7 +1751,7 @@
                     // Crear gap
                     var newGap = document.createElement('div');
                     newGap.className = 'add-section-gap';
-                    newGap.innerHTML = '<button class="add-section-btn">+ Agregar seccion</button>';
+                    newGap.innerHTML = '<button class="add-section-btn">+ Agregar sección</button>';
 
                     // Insertar en posicion correcta
                     var gaps = preview.querySelectorAll('.add-section-gap');
@@ -1755,16 +1780,16 @@
                     markDirty();
                     hideLoading();
 
-                    // Scroll a la nueva seccion
+                    // Scroll a la nueva sección
                     newWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 } else {
                     hideLoading();
-                    alert('Error: ' + (data.message || 'No se pudo agregar la seccion'));
+                    alert('Error: ' + (data.message || 'No se pudo agregar la sección'));
                 }
             })
             .catch(function(err) {
                 hideLoading();
-                alert('Error de conexion al agregar seccion');
+                alert('Error de conexión al agregar sección');
             });
         }
 
@@ -2130,7 +2155,7 @@
             var urlInput = document.createElement('input');
             urlInput.type = 'text';
             urlInput.value = url;
-            urlInput.placeholder = 'URL (#seccion o /pagina)';
+            urlInput.placeholder = 'URL (#sección o /página)';
             urlInput.dataset.linkField = 'url';
 
             var removeBtn = document.createElement('button');
@@ -2214,7 +2239,7 @@
                 }
             });
 
-            showLoading('Aplicando cambios...', 'Re-renderizando seccion');
+            showLoading('Aplicando cambios...', 'Re-renderizando sección');
 
             // POST to render endpoint
             fetch('/builder/' + pageId + '/sections/render', {

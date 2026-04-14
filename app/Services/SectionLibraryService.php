@@ -399,11 +399,12 @@ class SectionLibraryService
     private static function renderTestimonials(array $testimonials, string $sectionId): string
     {
         $html = '';
-        foreach ($testimonials as $t) {
+        foreach ($testimonials as $i => $t) {
             $quote = htmlspecialchars($t['quote'] ?? '', ENT_QUOTES, 'UTF-8');
             $name = htmlspecialchars($t['name'] ?? '', ENT_QUOTES, 'UTF-8');
             $role = htmlspecialchars($t['role'] ?? '', ENT_QUOTES, 'UTF-8');
-            $avatar = htmlspecialchars($t['avatar'] ?? 'https://picsum.photos/seed/avatar/80/80', ENT_QUOTES, 'UTF-8');
+            $avatarDefault = 'https://picsum.photos/seed/person' . ($i ?? rand(1, 99)) . '/80/80';
+            $avatar = htmlspecialchars($t['avatar'] ?? $avatarDefault, ENT_QUOTES, 'UTF-8');
             $stars = (int) ($t['stars'] ?? 5);
             $starsHtml = str_repeat('<span class="wc-' . $sectionId . '-star">&#9733;</span>', $stars);
             $html .= "<div class=\"wc-{$sectionId}-card\"><div class=\"wc-{$sectionId}-stars\">{$starsHtml}</div><blockquote class=\"wc-{$sectionId}-quote\">{$quote}</blockquote><div class=\"wc-{$sectionId}-author\"><img src=\"{$avatar}\" alt=\"{$name}\" class=\"wc-{$sectionId}-avatar\"><div><span class=\"wc-{$sectionId}-name\">{$name}</span><span class=\"wc-{$sectionId}-role\">{$role}</span></div></div></div>";

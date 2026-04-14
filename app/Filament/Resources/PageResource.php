@@ -159,7 +159,7 @@ class PageResource extends Resource
             ])
             ->defaultSort('sort_order')
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('builder')
@@ -252,11 +252,47 @@ class PageResource extends Resource
 
                         redirect(PageResource::getUrl('edit', ['record' => $duplicate]));
                     }),
+                Tables\Actions\Action::make('export')
+                    ->label('Exportar')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('gray')
+                    ->action(function (Page $record) {
+                        $data = [
+                            'title' => $record->title,
+                            'slug' => $record->slug,
+                            'type' => $record->type,
+                            'content' => $record->content,
+                            'css' => $record->css,
+                            'seo_title' => $record->seo_title,
+                            'seo_description' => $record->seo_description,
+                            'template' => $record->template,
+                            'exported_at' => now()->toISOString(),
+                        ];
+
+                        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                        $filename = 'backup-' . $record->slug . '-' . now()->format('Y-m-d-His') . '.json';
+
+                        return response()->streamDownload(function () use ($json) {
+                            echo $json;
+                        }, $filename, ['Content-Type' => 'application/json']);
+                    }),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                \Illuminate\Database\Eloquent\SoftDeletingScope::class,
             ]);
     }
 
