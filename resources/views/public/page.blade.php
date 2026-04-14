@@ -4,35 +4,27 @@
 @section('description', $page->seo_description ?? '')
 
 @section('head')
-{{-- Open Graph --}}
-<meta property="og:title" content="{{ $page->seo_title ?? $page->title }}">
-<meta property="og:description" content="{{ $page->seo_description ?? '' }}">
-<meta property="og:url" content="{{ url()->current() }}">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="{{ $siteSettings['site_name'] ?? 'WebComposer' }}">
-@if($page->og_image)
-<meta property="og:image" content="{{ url($page->og_image) }}">
-@endif
+{{-- Meta tags (OG + Twitter) generados automáticamente --}}
+{!! \App\Services\SEOService::generateMetaTags([
+    'title' => $page->seo_title ?? $page->title,
+    'description' => $page->seo_description ?? '',
+    'og_image' => $page->og_image,
+]) !!}
 
-{{-- Twitter Card --}}
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ $page->seo_title ?? $page->title }}">
-<meta name="twitter:description" content="{{ $page->seo_description ?? '' }}">
+{{-- Schema WebPage --}}
+{!! \App\Services\SEOService::generatePageSchema([
+    'title' => $page->seo_title ?? $page->title,
+    'description' => $page->seo_description ?? '',
+    'og_image' => $page->og_image,
+]) !!}
 
-{{-- Schema.org --}}
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "{{ e($page->seo_title ?? $page->title) }}",
-    "description": "{{ e($page->seo_description ?? '') }}",
-    "url": "{{ url()->current() }}",
-    "publisher": {
-        "@type": "Organization",
-        "name": "{{ e($siteSettings['site_name'] ?? 'WebComposer') }}"
-    }
-}
-</script>
+{{-- Breadcrumbs Schema --}}
+@unless($page->is_homepage)
+{!! \App\Services\SEOService::generateBreadcrumbs([
+    ['name' => 'Inicio', 'url' => url('/')],
+    ['name' => $page->title, 'url' => url()->current()],
+]) !!}
+@endunless
 
 @if(!empty($isPreview))
 <style>

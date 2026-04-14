@@ -17,6 +17,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class PageResource extends Resource
@@ -112,16 +113,54 @@ class PageResource extends Resource
                     ])->columns(2),
 
                 Forms\Components\Section::make('SEO')
+                    ->description('Optimiza cómo se ve tu página en Google y redes sociales. Los schemas se generan automáticamente.')
                     ->schema([
                         Forms\Components\TextInput::make('seo_title')
-                            ->maxLength(255),
+                            ->label('Título SEO')
+                            ->helperText('60-70 caracteres ideal. Si vacío, usa el título de la página.')
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn ($state, Set $set) => null),
 
                         Forms\Components\Textarea::make('seo_description')
-                            ->maxLength(500),
+                            ->label('Descripción SEO')
+                            ->helperText('150-160 caracteres ideal. Aparece debajo del título en Google.')
+                            ->maxLength(500)
+                            ->rows(3)
+                            ->live(onBlur: true),
 
                         Forms\Components\FileUpload::make('og_image')
+                            ->label('Imagen para redes sociales')
+                            ->helperText('Recomendado: 1200x630px. Se muestra al compartir en Facebook, Twitter, etc.')
                             ->image()
                             ->directory('pages'),
+
+                        Forms\Components\Placeholder::make('seo_preview')
+                            ->label('Vista previa en Google')
+                            ->content(function ($record, $get): HtmlString {
+                                $title = $get('seo_title') ?: ($record?->title ?? 'Título de la página');
+                                $desc = $get('seo_description') ?: 'Descripción de la página que aparecerá en los resultados de búsqueda...';
+                                $slug = $record?->slug ?? 'pagina';
+                                $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'tusitio.com';
+
+                                $titleLen = mb_strlen($title);
+                                $descLen = mb_strlen($desc);
+                                $titleColor = $titleLen > 70 ? '#ef4444' : ($titleLen > 60 ? '#f59e0b' : '#10b981');
+                                $descColor = $descLen > 160 ? '#ef4444' : ($descLen > 150 ? '#f59e0b' : '#10b981');
+
+                                return new HtmlString('
+                                    <div style="max-width:600px;font-family:Arial,sans-serif;margin-top:4px;">
+                                        <div style="font-size:11px;color:#4d5156;margin-bottom:2px;">' . e($domain) . ' › ' . e($slug) . '</div>
+                                        <div style="font-size:18px;color:#1a0dab;font-weight:400;margin-bottom:3px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' . e(\Illuminate\Support\Str::limit($title, 70)) . '</div>
+                                        <div style="font-size:13px;color:#4d5156;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' . e(\Illuminate\Support\Str::limit($desc, 160)) . '</div>
+                                        <div style="margin-top:8px;font-size:11px;">
+                                            <span style="color:' . $titleColor . ';">Título: ' . $titleLen . '/70</span>
+                                            &nbsp;·&nbsp;
+                                            <span style="color:' . $descColor . ';">Descripción: ' . $descLen . '/160</span>
+                                        </div>
+                                    </div>
+                                ');
+                            }),
                     ]),
             ]);
     }

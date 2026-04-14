@@ -86,6 +86,9 @@
     <link rel="alternate" type="application/rss+xml" title="Blog Feed" href="{{ url('/feed.xml') }}">
     <link rel="canonical" href="{{ url()->current() }}">
 
+    {{-- Schema.org: Organization + WebSite (global, todas las páginas) --}}
+    {!! \App\Services\SEOService::generateGlobalSchemas() !!}
+
     @yield('head')
 
     {{-- Analytics: only load if cookie consent is accepted --}}
