@@ -13,6 +13,7 @@ return [
     'icon' => '🧭',
     'placeholders' => [
         'brand_name' => ['type' => 'text', 'label' => 'Nombre de marca', 'default' => 'MiSitio'],
+        'brand_logo' => ['type' => 'image', 'label' => 'Logo de la empresa', 'default' => ''],
         'nav_links' => ['type' => 'links', 'label' => 'Links de navegación', 'default' => [
             ['text' => 'Inicio', 'url' => '#'],
             ['text' => 'Servicios', 'url' => '#servicios'],
@@ -27,12 +28,7 @@ return [
   <div class="wc-navbar-modern-container">
     <!-- Logo / Brand -->
     <a href="/" class="wc-navbar-modern-brand">
-      <span class="wc-navbar-modern-brand-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect width="28" height="28" rx="8" fill="var(--color-primary, #6366F1)"/>
-          <path d="M8 14l4 4 8-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>
+      {{brand_logo}}
       <span class="wc-navbar-modern-brand-text">{{brand_name}}</span>
     </a>
 
@@ -96,6 +92,16 @@ return [
   gap: 0.65rem;
   text-decoration: none;
   flex-shrink: 0;
+}
+.wc-navbar-modern-brand-logo {
+  height: 36px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.wc-navbar-modern-brand:hover .wc-navbar-modern-brand-logo {
+  transform: scale(1.04);
 }
 .wc-navbar-modern-brand-icon {
   display: flex;

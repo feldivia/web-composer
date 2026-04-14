@@ -359,6 +359,32 @@
             letter-spacing: 0.5px;
             margin-bottom: 10px;
         }
+        .palette-presets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        .palette-preset {
+            display: flex;
+            gap: 3px;
+            padding: 6px 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+        .palette-preset:hover {
+            border-color: #6366f1;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(99,102,241,0.15);
+        }
+        .palette-preset .ps {
+            flex: 1;
+            height: 20px;
+            border-radius: 4px;
+        }
         .color-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -851,7 +877,40 @@
         </div>
 
         <div class="style-panel-section">
-            <div class="style-panel-label">Colores</div>
+            <div class="style-panel-label">Paleta de colores</div>
+            <div class="palette-presets">
+                <div class="palette-preset" onclick="applyPalette('#1E40AF','#3B82F6','#60A5FA','#F8FAFC','#0F172A')" title="Corporativo Azul">
+                    <span class="ps" style="background:#1E40AF"></span><span class="ps" style="background:#3B82F6"></span><span class="ps" style="background:#60A5FA"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#1E293B','#334155','#94A3B8','#F1F5F9','#0F172A')" title="Elegante Oscuro">
+                    <span class="ps" style="background:#1E293B"></span><span class="ps" style="background:#334155"></span><span class="ps" style="background:#94A3B8"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#4F46E5','#6366F1','#A5B4FC','#FAFAFE','#1E1B4B')" title="Indigo Moderno">
+                    <span class="ps" style="background:#4F46E5"></span><span class="ps" style="background:#6366F1"></span><span class="ps" style="background:#A5B4FC"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#047857','#059669','#6EE7B7','#F0FDF4','#022C22')" title="Esmeralda">
+                    <span class="ps" style="background:#047857"></span><span class="ps" style="background:#059669"></span><span class="ps" style="background:#6EE7B7"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#881337','#BE123C','#FDA4AF','#FFF1F2','#1C1917')" title="Borgona">
+                    <span class="ps" style="background:#881337"></span><span class="ps" style="background:#BE123C"></span><span class="ps" style="background:#FDA4AF"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#0C4A6E','#0369A1','#7DD3FC','#F0F9FF','#082F49')" title="Oceano Profundo">
+                    <span class="ps" style="background:#0C4A6E"></span><span class="ps" style="background:#0369A1"></span><span class="ps" style="background:#7DD3FC"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#292524','#44403C','#D97706','#FAFAF9','#1C1917')" title="Grafito & Dorado">
+                    <span class="ps" style="background:#292524"></span><span class="ps" style="background:#44403C"></span><span class="ps" style="background:#D97706"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#7C3AED','#8B5CF6','#C4B5FD','#FAF5FF','#2E1065')" title="Violeta Suave">
+                    <span class="ps" style="background:#7C3AED"></span><span class="ps" style="background:#8B5CF6"></span><span class="ps" style="background:#C4B5FD"></span>
+                </div>
+                <div class="palette-preset" onclick="applyPalette('#818CF8','#6366F1','#A78BFA','#0F172A','#E2E8F0')" title="Nocturno">
+                    <span class="ps" style="background:#818CF8"></span><span class="ps" style="background:#6366F1"></span><span class="ps" style="background:#A78BFA"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="style-panel-section">
+            <div class="style-panel-label">Ajuste manual</div>
             <div class="color-grid">
                 <div class="color-item">
                     <input type="color" class="color-swatch-input" id="colorPrimary" value="{{ $colors['primary'] ?? '#6366F1' }}" onchange="updateColor('primary', this.value)">
@@ -1408,6 +1467,21 @@
                 panel.classList.remove('open');
                 if (!effectsPanelOpen) main.classList.remove('style-panel-open');
             }
+        }
+
+        function applyPalette(primary, secondary, accent, background, text) {
+            updateColor('primary', primary);
+            updateColor('secondary', secondary);
+            updateColor('accent', accent);
+            updateColor('background', background);
+            updateColor('text', text);
+
+            // Sync color picker inputs
+            document.getElementById('colorPrimary').value = primary;
+            document.getElementById('colorSecondary').value = secondary;
+            document.getElementById('colorAccent').value = accent;
+            document.getElementById('colorBackground').value = background;
+            document.getElementById('colorText').value = text;
         }
 
         function updateColor(key, value) {

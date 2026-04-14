@@ -118,11 +118,16 @@ class SectionLibraryController extends Controller
         $html = SectionLibraryService::render($id, [], $defaultColors, $defaultFonts);
         $css = $section['css'] ?? '';
 
+        // Secciones con fondo transparente necesitan un fondo oscuro para contraste
+        $needsDarkBg = in_array($section['category'], ['navbar'], true)
+            && str_contains($id, 'transparent');
+        $bodyBg = $needsDarkBg ? 'background:#0F172A;min-height:400px;' : 'background:#fff;';
+
         return response(
             '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             . '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
             . '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">'
-            . '<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;background:#fff;}'
+            . '<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;' . $bodyBg . '}'
             . $css . '</style></head><body>' . $html . '</body></html>',
             200,
             ['Content-Type' => 'text/html']

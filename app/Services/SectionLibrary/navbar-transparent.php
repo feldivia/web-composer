@@ -13,6 +13,7 @@ return [
     'icon' => '🌐',
     'placeholders' => [
         'brand_name' => ['type' => 'text', 'label' => 'Nombre de marca', 'default' => 'MiSitio'],
+        'brand_logo' => ['type' => 'image', 'label' => 'Logo de la empresa', 'default' => ''],
         'nav_links' => ['type' => 'links', 'label' => 'Links de navegación', 'default' => [
             ['text' => 'Inicio', 'url' => '#'],
             ['text' => 'Servicios', 'url' => '#servicios'],
@@ -27,12 +28,7 @@ return [
   <div class="wc-navbar-transparent-container">
     <!-- Logo / Brand -->
     <a href="/" class="wc-navbar-transparent-brand">
-      <span class="wc-navbar-transparent-brand-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect width="28" height="28" rx="8" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-          <path d="M8 14l4 4 8-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>
+      {{brand_logo}}
       <span class="wc-navbar-transparent-brand-text">{{brand_name}}</span>
     </a>
 
@@ -99,6 +95,16 @@ return [
   gap: 0.65rem;
   text-decoration: none;
   flex-shrink: 0;
+}
+.wc-navbar-transparent-brand-logo {
+  height: 36px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.wc-navbar-transparent-brand:hover .wc-navbar-transparent-brand-logo {
+  transform: scale(1.04);
 }
 .wc-navbar-transparent-brand-icon {
   display: flex;

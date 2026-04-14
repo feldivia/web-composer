@@ -114,11 +114,21 @@ class SectionLibraryService
 
         $html = $section['html'];
 
+        // Auto-inyectar logo del sitio para navbars si no se provee
+        if ($section['category'] === 'navbar' && empty($content['brand_logo'])) {
+            $siteLogo = SettingsService::get('site_logo');
+            if ($siteLogo) {
+                $content['brand_logo'] = $siteLogo;
+            }
+        }
+
         // Reemplazar placeholders de contenido
         foreach ($section['placeholders'] as $key => $placeholder) {
             $value = $content[$key] ?? $placeholder['default'];
 
-            if ($placeholder['type'] === 'stats') {
+            if ($placeholder['type'] === 'image' && $key === 'brand_logo') {
+                $value = self::renderBrandLogo($value, $id, $content['brand_name'] ?? '');
+            } elseif ($placeholder['type'] === 'stats') {
                 $value = self::renderStats($value, $id);
             } elseif ($placeholder['type'] === 'features') {
                 $value = self::renderFeatures($value, $id);
@@ -491,5 +501,36 @@ class SectionLibraryService
         }
 
         return $html;
+    }
+
+    /**
+     * Renderiza el logo de marca: <img> si hay URL, SVG fallback si no.
+     *
+     * @param string $logoUrl URL del logo (puede estar vacío)
+     * @param string $sectionId ID de la sección para prefijo CSS
+     * @param string $brandName Nombre de marca para alt text
+     * @return string HTML del logo
+     */
+    private static function renderBrandLogo(string $logoUrl, string $sectionId, string $brandName): string
+    {
+        $alt = htmlspecialchars($brandName ?: 'Logo', ENT_QUOTES, 'UTF-8');
+
+        if (!empty($logoUrl)) {
+            $src = htmlspecialchars($logoUrl, ENT_QUOTES, 'UTF-8');
+
+            return "<img src=\"{$src}\" alt=\"{$alt}\" class=\"wc-{$sectionId}-brand-logo\">";
+        }
+
+        // SVG fallback genérico
+        $isTransparent = str_contains($sectionId, 'transparent');
+        $fill = $isTransparent
+            ? 'rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="1'
+            : 'var(--color-primary, #6366F1)';
+
+        return '<span class="wc-' . $sectionId . '-brand-icon">'
+            . '<svg width="28" height="28" viewBox="0 0 28 28" fill="none">'
+            . '<rect width="28" height="28" rx="8" fill="' . $fill . '"/>'
+            . '<path d="M8 14l4 4 8-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
+            . '</svg></span>';
     }
 }
