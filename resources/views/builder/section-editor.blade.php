@@ -671,45 +671,100 @@
             font-size: 18px;
         }
         .modal-close:hover { background: #f1f5f9; }
-        .modal-sections-grid {
+        /* Category grid (level 1) */
+        .modal-categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
         }
-        .modal-section-card {
-            padding: 14px;
+        .modal-cat-card {
+            padding: 18px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            background: #fff;
+        }
+        .modal-cat-card:hover {
+            border-color: #6366f1;
+            background: #f5f3ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99,102,241,0.12);
+        }
+        .modal-cat-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .modal-cat-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-cat-count {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+        /* Section grid (level 2) */
+        .modal-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
+            background: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #475569;
+            font-weight: 500;
+            margin-bottom: 14px;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .modal-back-btn:hover { border-color: #6366f1; color: #6366f1; }
+        .modal-sections-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        .modal-section-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
         .modal-section-card:hover {
             border-color: #6366f1;
-            background: #eef2ff;
+            background: #f5f3ff;
         }
         .modal-section-icon {
-            font-size: 22px;
-            margin-bottom: 6px;
+            font-size: 24px;
+            flex-shrink: 0;
+            width: 40px;
+            text-align: center;
         }
+        .modal-section-info { flex: 1; }
         .modal-section-name {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
         }
         .modal-section-desc {
-            font-size: 11px;
+            font-size: 12px;
             color: #64748b;
             margin-top: 2px;
+            line-height: 1.4;
         }
-        .modal-category-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #6366f1;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 16px 0 8px 0;
+        @media (max-width: 600px) {
+            .modal-categories-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        .modal-category-title:first-child { margin-top: 0; }
 
         /* ---- Loading Overlay ---- */
         .loading-overlay {
@@ -1497,41 +1552,82 @@
         // ============================================================
         // Add Section
         // ============================================================
+        // Category icons for the modal
+        var categoryIcons = {
+            'navbar': '🧭', 'heroes': '🎯', 'services': '⚙️', 'about': '👤',
+            'trust': '📊', 'testimonials': '💬', 'pricing': '💰', 'faq': '❓',
+            'contact': '✉️', 'cta': '🚀', 'gallery': '🖼️', 'quote': '💭',
+            'footer': '🔻', 'marquee': '📢'
+        };
+
         function openAddModal(insertAfterIndex) {
             addInsertIndex = insertAfterIndex;
             var modal = document.getElementById('addSectionModal');
             var list = document.getElementById('modalSectionsList');
-            list.innerHTML = '';
+            showCategoryGrid(list);
+            modal.classList.add('visible');
+        }
+
+        function showCategoryGrid(container) {
+            container.innerHTML = '';
+            var grid = document.createElement('div');
+            grid.className = 'modal-categories-grid';
 
             for (var catKey in library) {
                 var cat = library[catKey];
                 var sections = cat.sections || [];
                 if (sections.length === 0) continue;
 
-                var title = document.createElement('div');
-                title.className = 'modal-category-title';
-                title.textContent = cat.name || catKey;
-                list.appendChild(title);
-
-                var grid = document.createElement('div');
-                grid.className = 'modal-sections-grid';
-
-                for (var i = 0; i < sections.length; i++) {
-                    var sec = sections[i];
-                    var card = document.createElement('div');
-                    card.className = 'modal-section-card';
-                    card.innerHTML =
-                        '<div class="modal-section-icon">' + (sec.icon || '') + '</div>' +
-                        '<div class="modal-section-name">' + (sec.name || sec.id) + '</div>' +
-                        '<div class="modal-section-desc">' + (sec.description || '') + '</div>';
-                    card.onclick = (function(s) {
-                        return function() { addSection(s.id); };
-                    })(sec);
-                    grid.appendChild(card);
-                }
-
-                list.appendChild(grid);
+                var card = document.createElement('div');
+                card.className = 'modal-cat-card';
+                card.innerHTML =
+                    '<span class="modal-cat-icon">' + (categoryIcons[catKey] || '📦') + '</span>' +
+                    '<div class="modal-cat-name">' + (cat.name || catKey) + '</div>' +
+                    '<div class="modal-cat-count">' + sections.length + (sections.length === 1 ? ' bloque' : ' bloques') + '</div>';
+                card.onclick = (function(key) {
+                    return function() {
+                        showCategorySections(document.getElementById('modalSectionsList'), key);
+                    };
+                })(catKey);
+                grid.appendChild(card);
             }
+
+            container.appendChild(grid);
+        }
+
+        function showCategorySections(container, catKey) {
+            var cat = library[catKey];
+            if (!cat) return;
+            var sections = cat.sections || [];
+
+            container.innerHTML = '';
+
+            var backBtn = document.createElement('button');
+            backBtn.className = 'modal-back-btn';
+            backBtn.innerHTML = '&larr; Volver a categorías';
+            backBtn.onclick = function() { showCategoryGrid(container); };
+            container.appendChild(backBtn);
+
+            var grid = document.createElement('div');
+            grid.className = 'modal-sections-grid';
+
+            for (var i = 0; i < sections.length; i++) {
+                var sec = sections[i];
+                var card = document.createElement('div');
+                card.className = 'modal-section-card';
+                card.innerHTML =
+                    '<div class="modal-section-icon">' + (sec.icon || '') + '</div>' +
+                    '<div class="modal-section-info">' +
+                        '<div class="modal-section-name">' + (sec.name || sec.id) + '</div>' +
+                        '<div class="modal-section-desc">' + (sec.description || '') + '</div>' +
+                    '</div>';
+                card.onclick = (function(s) {
+                    return function() { addSection(s.id); };
+                })(sec);
+                grid.appendChild(card);
+            }
+
+            container.appendChild(grid);
 
             modal.classList.add('visible');
         }
