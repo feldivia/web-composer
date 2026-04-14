@@ -1,0 +1,27 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.20",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.2.0",
+        "postcss": "^8.4.47",
+        "tailwindcss": "^3.4.19",
+        "vite": "^6.0.11"
+    },
+    "dependencies": {
+        "@tailwindcss/typography": "^0.5.19",
+        "@tiptap/core": "^3.22.3",
+        "@tiptap/pm": "^3.22.3",
+        "@tiptap/starter-kit": "^3.22.3",
+        "alpinejs": "^3.15.11",
+        "grapesjs": "^0.22.15",
+        "grapesjs-blocks-basic": "^1.0.2",
+        "grapesjs-preset-webpage": "^1.0.3"
+    }
+}
