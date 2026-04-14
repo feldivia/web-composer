@@ -72,14 +72,14 @@ class HtmlSanitizerService
                 'span[style|class|data-reveal|data-count|data-count-suffix],p[style|class],' .
                 'a[href|target|style|class|title],img[src|alt|style|class|width|height|loading],' .
                 'h1[style|class|id],h2[style|class|id],h3[style|class|id],h4[style|class|id],h5[style|class|id],h6[style|class|id],' .
-                'section[style|class|id|data-reveal],article[style|class],aside[style|class],header[style|class],footer[style|class],nav[style|class|data-menu-toggle|data-mobile-menu],main[style|class],' .
+                'section[style|class|id|data-reveal],article[style|class],aside[style|class],header[style|class],footer[style|class],nav[style|class|data-menu-toggle|data-mobile-menu|data-sticky|data-sticky-class|data-sticky-offset],main[style|class],' .
                 'figure[style|class],figcaption[style|class],' .
                 'details[style|class],summary[style|class],' .
                 'ul[style|class],ol[style|class],li[style|class],' .
                 'table[style|class],thead,tbody,tr,th[style|class],td[style|class],' .
                 'strong,em,b,i,u,s,br,hr[style|class],' .
                 'blockquote[style|class],pre[style|class],code,' .
-                'form[style|class|action|method],input[type|placeholder|style|class|name|value|required],textarea[placeholder|rows|style|class|name|required],select[style|class|name],option[value|selected],button[type|style|class],label[for|style|class],' .
+                'form[style|class|action|method],input[type|placeholder|style|class|name|value|required],textarea[placeholder|rows|style|class|name|required],select[style|class|name],option[value|selected],button[type|style|class|aria-label|aria-expanded],label[for|style|class],' .
                 'iframe[src|width|height|style|class|frameborder|allowfullscreen|loading],' .
                 'video[src|controls|autoplay|loop|muted|style|class|width|height],source[src|type],' .
                 'mark[style|class],small[style|class],sub,sup'
@@ -137,6 +137,8 @@ class HtmlSanitizerService
                 ]);
                 $def->addElement('button', 'Inline', 'Inline', 'Common', [
                     'type' => 'Enum#button,submit,reset',
+                    'aria-label' => 'Text',
+                    'aria-expanded' => 'Enum#true,false',
                 ]);
                 $def->addElement('label', 'Inline', 'Inline', 'Common', [
                     'for' => 'ID',
@@ -173,7 +175,7 @@ class HtmlSanitizerService
                     'data-menu-toggle', 'data-mobile-menu', 'data-scroll-top',
                     'data-animate', 'data-animate-delay', 'data-hover', 'data-parallax',
                     'data-typewriter', 'data-marquee', 'data-lightbox', 'data-carousel',
-                    'data-tabs', 'data-sticky', 'data-progress', 'data-dismiss',
+                    'data-tabs', 'data-sticky', 'data-sticky-class', 'data-sticky-offset', 'data-progress', 'data-dismiss',
                     'data-video-src', 'data-pricing-toggle', 'data-before-after',
                 ];
                 // Custom HTML5 elements

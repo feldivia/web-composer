@@ -36,22 +36,7 @@ class SectionLibraryService
         $sections = self::registry();
         $grouped = [];
 
-        // Nombres legibles para cada categoría
-        $categoryNames = [
-            'heroes' => 'Heroes',
-            'services' => 'Servicios',
-            'about' => 'Acerca de',
-            'trust' => 'Confianza / Stats',
-            'testimonials' => 'Testimonios',
-            'pricing' => 'Precios',
-            'faq' => 'Preguntas Frecuentes',
-            'contact' => 'Contacto',
-            'cta' => 'Llamada a la Acción',
-            'gallery' => 'Galería',
-            'quote' => 'Citas',
-            'footer' => 'Footer',
-            'marquee' => 'Marquee',
-        ];
+        $categoryNames = self::categoryNames();
 
         foreach ($sections as $section) {
             $cat = $section['category'];
@@ -64,7 +49,15 @@ class SectionLibraryService
             $grouped[$cat]['sections'][] = $section;
         }
 
-        return $grouped;
+        // Reorder: navbar first, then rest
+        $ordered = [];
+        if (isset($grouped['navbar'])) {
+            $ordered['navbar'] = $grouped['navbar'];
+            unset($grouped['navbar']);
+        }
+        $ordered = array_merge($ordered, $grouped);
+
+        return $ordered;
     }
 
     /**
@@ -176,21 +169,7 @@ class SectionLibraryService
         $sections = self::registry();
         $grouped = [];
 
-        $categoryNames = [
-            'heroes' => 'Heroes',
-            'services' => 'Servicios',
-            'about' => 'Acerca de',
-            'trust' => 'Confianza / Stats',
-            'testimonials' => 'Testimonios',
-            'pricing' => 'Precios',
-            'faq' => 'Preguntas Frecuentes',
-            'contact' => 'Contacto',
-            'cta' => 'Llamada a la Acción',
-            'gallery' => 'Galería',
-            'quote' => 'Citas',
-            'footer' => 'Footer',
-            'marquee' => 'Marquee',
-        ];
+        $categoryNames = self::categoryNames();
 
         foreach ($sections as $section) {
             $cat = $section['category'];
@@ -209,7 +188,15 @@ class SectionLibraryService
             ];
         }
 
-        return $grouped;
+        // Reorder: navbar first
+        $ordered = [];
+        if (isset($grouped['navbar'])) {
+            $ordered['navbar'] = $grouped['navbar'];
+            unset($grouped['navbar']);
+        }
+        $ordered = array_merge($ordered, $grouped);
+
+        return $ordered;
     }
 
     /**
@@ -288,6 +275,31 @@ class SectionLibraryService
         self::$cachedRegistry = $sections;
 
         return $sections;
+    }
+
+    /**
+     * Mapa centralizado de nombres de categorías.
+     *
+     * @return array<string, string>
+     */
+    private static function categoryNames(): array
+    {
+        return [
+            'navbar' => 'Navegación',
+            'heroes' => 'Heroes',
+            'services' => 'Servicios',
+            'about' => 'Acerca de',
+            'trust' => 'Confianza / Stats',
+            'testimonials' => 'Testimonios',
+            'pricing' => 'Precios',
+            'faq' => 'Preguntas Frecuentes',
+            'contact' => 'Contacto',
+            'cta' => 'Llamada a la Acción',
+            'gallery' => 'Galería',
+            'quote' => 'Citas',
+            'footer' => 'Footer',
+            'marquee' => 'Marquee',
+        ];
     }
 
     /**
