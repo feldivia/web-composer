@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/builder/{page}/wizard/generate', [\App\Http\Controllers\Builder\AIWizardController::class, 'generate'])->name('builder.wizard.generate');
     Route::get('/builder/{page}/sections', [\App\Http\Controllers\Builder\SectionEditorController::class, 'show'])->name('builder.sections');
     Route::post('/builder/{page}/sections/add', [\App\Http\Controllers\Builder\SectionEditorController::class, 'addSection'])->name('builder.sections.add');
+    Route::post('/builder/{page}/sections/render', [\App\Http\Controllers\Builder\SectionEditorController::class, 'renderSection'])->name('builder.sections.render');
+    Route::get('/builder/{page}/sections/{sectionId}/edit', [\App\Http\Controllers\Builder\SectionEditorController::class, 'editSection'])->name('builder.sections.edit');
     Route::post('/api/heartbeat', [\App\Http\Controllers\Api\SessionController::class, 'heartbeat'])->name('api.heartbeat');
 });
 

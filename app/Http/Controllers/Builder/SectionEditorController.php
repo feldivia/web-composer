@@ -203,4 +203,88 @@ class SectionEditorController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Re-renderiza una seccion con contenido actualizado.
+     *
+     * POST /builder/{page}/sections/render
+     *
+     * @param  Request  $request
+     * @param  Page     $page
+     * @return JsonResponse
+     */
+    public function renderSection(Request $request, Page $page): JsonResponse
+    {
+        $validated = $request->validate([
+            'section_id' => 'required|string',
+            'content' => 'required|array',
+        ]);
+
+        $sectionId = $validated['section_id'];
+        $sectionMeta = SectionLibraryService::get($sectionId);
+
+        if ($sectionMeta === null) {
+            return response()->json(['success' => false, 'message' => 'Seccion no encontrada'], 404);
+        }
+
+        $pageContent = $page->content ?? [];
+        $colors = $pageContent['colors'] ?? [
+            'primary' => '#6366F1', 'secondary' => '#0EA5E9',
+            'accent' => '#F59E0B', 'background' => '#FFFFFF', 'text' => '#1E293B',
+        ];
+        $fonts = $pageContent['fonts'] ?? ['heading' => 'Space Grotesk', 'body' => 'Inter'];
+
+        $html = SectionLibraryService::render($sectionId, $validated['content'], $colors, $fonts);
+
+        // Actualizar section_content en la pagina
+        $sectionContent = $pageContent['section_content'] ?? [];
+        $sectionContent[$sectionId] = $validated['content'];
+        $pageContent['section_content'] = $sectionContent;
+        $page->update(['content' => $pageContent]);
+
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+        ]);
+    }
+
+    /**
+     * Retorna los placeholders y contenido actual de una seccion.
+     *
+     * GET /builder/{page}/sections/{sectionId}/edit
+     *
+     * @param  Page    $page
+     * @param  string  $sectionId
+     * @return JsonResponse
+     */
+    public function editSection(Page $page, string $sectionId): JsonResponse
+    {
+        $sectionMeta = SectionLibraryService::get($sectionId);
+
+        if ($sectionMeta === null) {
+            return response()->json(['success' => false, 'message' => 'Seccion no encontrada'], 404);
+        }
+
+        $pageContent = $page->content ?? [];
+        $currentContent = $pageContent['section_content'][$sectionId] ?? [];
+
+        // Merge defaults with current content
+        $fields = [];
+        foreach ($sectionMeta['placeholders'] as $key => $placeholder) {
+            $fields[] = [
+                'key' => $key,
+                'type' => $placeholder['type'],
+                'label' => $placeholder['label'],
+                'value' => $currentContent[$key] ?? $placeholder['default'],
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'section_id' => $sectionId,
+            'section_name' => $sectionMeta['name'],
+            'section_icon' => $sectionMeta['icon'],
+            'fields' => $fields,
+        ]);
+    }
 }

@@ -161,9 +161,30 @@ class PageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('builder')
-                    ->label('Editor')
-                    ->icon('heroicon-o-paint-brush')
-                    ->color('info')
+                    ->label(function (Page $record): string {
+                        $content = $record->content;
+                        $hasContent = is_array($content)
+                            && !empty($content['html'])
+                            && trim($content['html']) !== '';
+
+                        return $hasContent ? 'Editar' : 'Crear con IA';
+                    })
+                    ->icon(function (Page $record): string {
+                        $content = $record->content;
+                        $hasContent = is_array($content)
+                            && !empty($content['html'])
+                            && trim($content['html']) !== '';
+
+                        return $hasContent ? 'heroicon-o-pencil-square' : 'heroicon-o-sparkles';
+                    })
+                    ->color(function (Page $record): string {
+                        $content = $record->content;
+                        $hasContent = is_array($content)
+                            && !empty($content['html'])
+                            && trim($content['html']) !== '';
+
+                        return $hasContent ? 'info' : 'warning';
+                    })
                     ->url(function (Page $record): string {
                         $content = $record->content;
                         $hasContent = is_array($content)
@@ -174,23 +195,8 @@ class PageResource extends Resource
                             return route('builder.wizard', $record);
                         }
 
-                        // Si tiene secciones de la biblioteca, ir al editor de secciones
-                        if (! empty($content['sections'])) {
-                            return route('builder.sections', $record);
-                        }
-
-                        return route('builder.editor', $record);
+                        return route('builder.sections', $record);
                     }),
-                Tables\Actions\Action::make('advanced_editor')
-                    ->label('Editor Avanzado')
-                    ->icon('heroicon-o-code-bracket')
-                    ->color('gray')
-                    ->url(fn (Page $record): string => route('builder.editor', $record)),
-                Tables\Actions\Action::make('wizard')
-                    ->label('Wizard IA')
-                    ->icon('heroicon-o-sparkles')
-                    ->color('warning')
-                    ->url(fn (Page $record): string => route('builder.wizard', $record)),
                 Tables\Actions\Action::make('preview')
                     ->label('Preview')
                     ->icon('heroicon-o-eye')

@@ -232,6 +232,8 @@
             font-size: 14px;
         }
         .toolbar-btn:hover { background: #f1f5f9; color: #1e293b; }
+        .toolbar-btn.edit-btn { color: #6366f1; }
+        .toolbar-btn.edit-btn:hover { background: #eef2ff; color: #4f46e5; }
         .toolbar-btn.danger:hover { background: #fef2f2; color: #ef4444; }
         .toolbar-btn[title]::after {
             content: attr(title);
@@ -437,6 +439,194 @@
             border-color: #6366f1;
             box-shadow: 0 0 0 2px rgba(99,102,241,0.15);
         }
+
+        /* ---- Section Edit Panel ---- */
+        .edit-panel {
+            position: fixed;
+            top: 56px;
+            right: -420px;
+            width: 400px;
+            height: calc(100vh - 56px);
+            background: #fff;
+            border-left: 1px solid #e2e8f0;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+            z-index: 250;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .edit-panel.open { right: 0; }
+        .edit-panel-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .edit-panel-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .edit-panel-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 8px;
+            color: #64748b;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .edit-panel-close:hover { background: #f1f5f9; color: #1e293b; }
+        .edit-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+        .edit-field {
+            margin-bottom: 16px;
+        }
+        .edit-field-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .edit-field input[type="text"],
+        .edit-field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            resize: vertical;
+        }
+        .edit-field input[type="text"]:focus,
+        .edit-field textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.15);
+        }
+        .edit-field textarea { min-height: 80px; }
+        /* Link list editor */
+        .edit-links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .edit-link-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .edit-link-row input {
+            flex: 1;
+            padding: 7px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+        .edit-link-row input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        .edit-link-remove {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #94a3b8;
+            border-radius: 6px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .edit-link-remove:hover { background: #fef2f2; color: #ef4444; }
+        .edit-link-add {
+            padding: 6px 12px;
+            border: 1px dashed #d1d5db;
+            background: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #6366f1;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .edit-link-add:hover { border-color: #6366f1; background: #f5f3ff; }
+        .edit-panel-actions {
+            padding: 12px 20px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .edit-panel-actions button {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-apply {
+            background: #6366f1;
+            color: #fff;
+            border: none;
+        }
+        .btn-apply:hover { background: #4f46e5; }
+        .btn-cancel {
+            background: #fff;
+            color: #64748b;
+            border: 1px solid #d1d5db;
+        }
+        .btn-cancel:hover { background: #f9fafb; }
+        /* Image field in edit panel */
+        .edit-image-preview {
+            width: 100%;
+            max-height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+        .edit-image-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #475569;
+            transition: all 0.2s;
+        }
+        .edit-image-btn:hover { border-color: #6366f1; color: #6366f1; }
 
         /* ---- Add Section Modal ---- */
         .modal-overlay {
@@ -810,9 +1000,9 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 Vista previa
             </a>
-            <a href="{{ route('builder.editor', $page) }}" class="topbar-btn topbar-btn-ghost" title="Editor avanzado GrapesJS">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                Avanzado
+            <a href="{{ route('builder.wizard', $page) }}" class="topbar-btn topbar-btn-ghost" title="Regenerar pagina completa con Wizard IA">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Wizard IA
             </a>
         </div>
     </div>
@@ -834,6 +1024,9 @@
                     <div class="section-toolbar">
                         <button class="toolbar-btn" onclick="moveSection({{ $index }}, -1)" title="Subir">&#9650;</button>
                         <button class="toolbar-btn" onclick="moveSection({{ $index }}, 1)" title="Bajar">&#9660;</button>
+                        <button class="toolbar-btn edit-btn" onclick="openEditPanel({{ $index }})" title="Editar contenido">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
                         <button class="toolbar-btn" onclick="regenerateSection({{ $index }})" title="Regenerar con IA">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         </button>
@@ -966,6 +1159,21 @@
             <div id="modalSectionsList">
                 {{-- Populated by JS --}}
             </div>
+        </div>
+    </div>
+
+    {{-- Section Edit Panel --}}
+    <div class="edit-panel" id="editPanel">
+        <div class="edit-panel-header">
+            <div class="edit-panel-title" id="editPanelTitle">Editar seccion</div>
+            <button class="edit-panel-close" onclick="closeEditPanel()">&times;</button>
+        </div>
+        <div class="edit-panel-body" id="editPanelBody">
+            {{-- Populated by JS --}}
+        </div>
+        <div class="edit-panel-actions">
+            <button class="btn-cancel" onclick="closeEditPanel()">Cancelar</button>
+            <button class="btn-apply" onclick="applyEditPanel()">Aplicar cambios</button>
         </div>
     </div>
 
@@ -1370,6 +1578,7 @@
                         '<div class="section-toolbar">' +
                             '<button class="toolbar-btn" title="Subir">&#9650;</button>' +
                             '<button class="toolbar-btn" title="Bajar">&#9660;</button>' +
+                            '<button class="toolbar-btn edit-btn" title="Editar contenido"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' +
                             '<button class="toolbar-btn" title="Regenerar con IA"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>' +
                             '<button class="toolbar-btn danger" title="Eliminar">&times;</button>' +
                         '</div>' +
@@ -1429,8 +1638,9 @@
                     var btns = toolbar.querySelectorAll('.toolbar-btn');
                     if (btns[0]) btns[0].onclick = function() { moveSection(idx, -1); };
                     if (btns[1]) btns[1].onclick = function() { moveSection(idx, 1); };
-                    if (btns[2]) btns[2].onclick = function() { regenerateSection(idx); };
-                    if (btns[3]) btns[3].onclick = function() { deleteSection(idx); };
+                    if (btns[2]) btns[2].onclick = function() { openEditPanel(idx); };
+                    if (btns[3]) btns[3].onclick = function() { regenerateSection(idx); };
+                    if (btns[4]) btns[4].onclick = function() { deleteSection(idx); };
                 })(i);
             }
 
@@ -1507,6 +1717,273 @@
             }
 
             markDirty();
+        }
+
+        // ============================================================
+        // Section Edit Panel
+        // ============================================================
+        var editPanelIndex = -1;
+        var editPanelSectionId = '';
+        var editPanelFields = [];
+
+        function openEditPanel(index) {
+            var sectionId = sectionIds[index];
+            if (!sectionId) return;
+
+            editPanelIndex = index;
+            editPanelSectionId = sectionId;
+
+            // Close other panels
+            var stylePanel = document.getElementById('stylePanel');
+            if (stylePanel && stylePanel.classList.contains('open')) toggleStylePanel();
+            var effectsPanel = document.getElementById('effectsPanel');
+            if (effectsPanel && effectsPanel.classList.contains('open')) toggleEffectsPanel();
+
+            // Fetch section fields from API
+            fetch('/builder/' + pageId + '/sections/' + sectionId + '/edit', {
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' }
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (!data.success) return;
+
+                editPanelFields = data.fields;
+                document.getElementById('editPanelTitle').innerHTML =
+                    '<span>' + (data.section_icon || '') + '</span> ' + (data.section_name || 'Editar');
+
+                var body = document.getElementById('editPanelBody');
+                body.innerHTML = '';
+
+                data.fields.forEach(function(field) {
+                    var div = document.createElement('div');
+                    div.className = 'edit-field';
+
+                    var label = document.createElement('div');
+                    label.className = 'edit-field-label';
+                    label.textContent = field.label;
+                    div.appendChild(label);
+
+                    if (field.type === 'text') {
+                        var input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = field.value || '';
+                        input.dataset.key = field.key;
+                        input.dataset.type = 'text';
+                        div.appendChild(input);
+
+                    } else if (field.type === 'textarea') {
+                        var ta = document.createElement('textarea');
+                        ta.value = field.value || '';
+                        ta.dataset.key = field.key;
+                        ta.dataset.type = 'textarea';
+                        ta.rows = 3;
+                        div.appendChild(ta);
+
+                    } else if (field.type === 'image') {
+                        var imgVal = field.value || '';
+                        if (imgVal) {
+                            var imgEl = document.createElement('img');
+                            imgEl.src = imgVal;
+                            imgEl.className = 'edit-image-preview';
+                            imgEl.onclick = function() { editImageField(field.key); };
+                            div.appendChild(imgEl);
+                        }
+                        var imgBtn = document.createElement('button');
+                        imgBtn.className = 'edit-image-btn';
+                        imgBtn.textContent = imgVal ? 'Cambiar imagen' : 'Elegir imagen';
+                        imgBtn.dataset.key = field.key;
+                        imgBtn.onclick = function() { editImageField(field.key); };
+                        div.appendChild(imgBtn);
+                        var imgInput = document.createElement('input');
+                        imgInput.type = 'hidden';
+                        imgInput.value = imgVal;
+                        imgInput.dataset.key = field.key;
+                        imgInput.dataset.type = 'image';
+                        div.appendChild(imgInput);
+
+                    } else if (field.type === 'links') {
+                        var linksList = document.createElement('div');
+                        linksList.className = 'edit-links-list';
+                        linksList.dataset.key = field.key;
+                        linksList.dataset.type = 'links';
+
+                        var links = Array.isArray(field.value) ? field.value : [];
+                        links.forEach(function(link, li) {
+                            linksList.appendChild(createLinkRow(link.text || '', link.url || '#', li));
+                        });
+
+                        var addBtn = document.createElement('button');
+                        addBtn.className = 'edit-link-add';
+                        addBtn.textContent = '+ Agregar enlace';
+                        addBtn.onclick = function() {
+                            linksList.insertBefore(createLinkRow('Nuevo enlace', '#', linksList.children.length - 1), addBtn);
+                        };
+                        linksList.appendChild(addBtn);
+                        div.appendChild(linksList);
+
+                    } else if (field.type === 'stats' || field.type === 'features' || field.type === 'testimonials' || field.type === 'pricing' || field.type === 'faq' || field.type === 'gallery' || field.type === 'marquee') {
+                        // Complex array types — JSON editor
+                        var ta2 = document.createElement('textarea');
+                        ta2.value = JSON.stringify(field.value, null, 2);
+                        ta2.dataset.key = field.key;
+                        ta2.dataset.type = 'json';
+                        ta2.rows = 6;
+                        ta2.style.fontFamily = 'monospace';
+                        ta2.style.fontSize = '11px';
+                        div.appendChild(ta2);
+
+                    } else {
+                        // Fallback to text input
+                        var inp = document.createElement('input');
+                        inp.type = 'text';
+                        inp.value = typeof field.value === 'string' ? field.value : JSON.stringify(field.value);
+                        inp.dataset.key = field.key;
+                        inp.dataset.type = 'text';
+                        div.appendChild(inp);
+                    }
+
+                    body.appendChild(div);
+                });
+
+                document.getElementById('editPanel').classList.add('open');
+
+                // Highlight active section
+                var wrappers = document.querySelectorAll('.section-wrapper');
+                wrappers.forEach(function(w) { w.classList.remove('active'); });
+                if (wrappers[index]) {
+                    wrappers[index].classList.add('active');
+                    wrappers[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }
+
+        function createLinkRow(text, url, index) {
+            var row = document.createElement('div');
+            row.className = 'edit-link-row';
+
+            var textInput = document.createElement('input');
+            textInput.type = 'text';
+            textInput.value = text;
+            textInput.placeholder = 'Texto';
+            textInput.dataset.linkField = 'text';
+
+            var urlInput = document.createElement('input');
+            urlInput.type = 'text';
+            urlInput.value = url;
+            urlInput.placeholder = 'URL (#seccion o /pagina)';
+            urlInput.dataset.linkField = 'url';
+
+            var removeBtn = document.createElement('button');
+            removeBtn.className = 'edit-link-remove';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.onclick = function() { row.remove(); };
+
+            row.appendChild(textInput);
+            row.appendChild(urlInput);
+            row.appendChild(removeBtn);
+            return row;
+        }
+
+        function editImageField(fieldKey) {
+            // Use the existing image picker and update the hidden input on selection
+            window._editPanelImageKey = fieldKey;
+            currentImageTarget = null; // Clear regular image target
+            openImagePicker();
+        }
+
+        function closeEditPanel() {
+            document.getElementById('editPanel').classList.remove('open');
+            editPanelIndex = -1;
+            editPanelSectionId = '';
+            editPanelFields = [];
+            var wrappers = document.querySelectorAll('.section-wrapper');
+            wrappers.forEach(function(w) { w.classList.remove('active'); });
+        }
+
+        function applyEditPanel() {
+            if (editPanelIndex === -1 || !editPanelSectionId) return;
+
+            var body = document.getElementById('editPanelBody');
+            var content = {};
+
+            // Collect values from form
+            body.querySelectorAll('[data-key]').forEach(function(el) {
+                var key = el.dataset.key;
+                var type = el.dataset.type;
+
+                if (type === 'text' || type === 'textarea') {
+                    content[key] = el.value;
+                } else if (type === 'image') {
+                    if (el.value) content[key] = el.value;
+                } else if (type === 'json') {
+                    try {
+                        content[key] = JSON.parse(el.value);
+                    } catch(e) {
+                        alert('Error en JSON del campo "' + key + '". Revisa la sintaxis.');
+                        return;
+                    }
+                } else if (type === 'links') {
+                    var links = [];
+                    el.querySelectorAll('.edit-link-row').forEach(function(row) {
+                        var t = row.querySelector('[data-link-field="text"]');
+                        var u = row.querySelector('[data-link-field="url"]');
+                        if (t && u && t.value.trim()) {
+                            links.push({ text: t.value.trim(), url: u.value.trim() || '#' });
+                        }
+                    });
+                    content[key] = links;
+                }
+            });
+
+            showLoading('Aplicando cambios...', 'Re-renderizando seccion');
+
+            // POST to render endpoint
+            fetch('/builder/' + pageId + '/sections/render', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    section_id: editPanelSectionId,
+                    content: content,
+                }),
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                hideLoading();
+                if (!data.success) {
+                    alert(data.message || 'Error al aplicar cambios');
+                    return;
+                }
+
+                // Replace section HTML in DOM
+                var wrappers = document.querySelectorAll('.section-wrapper');
+                var wrapper = wrappers[editPanelIndex];
+                if (wrapper) {
+                    // Keep toolbar, replace content
+                    var toolbar = wrapper.querySelector('.section-toolbar');
+                    wrapper.innerHTML = '';
+                    wrapper.appendChild(toolbar);
+                    wrapper.insertAdjacentHTML('beforeend', data.html);
+
+                    // Re-enable inline editing and image clicks on new content
+                    enableInlineEditing();
+                    enableImageClicks();
+                    rebindToolbarEvents();
+                }
+
+                // Update sectionContent
+                sectionContent[editPanelSectionId] = content;
+                markDirty();
+
+                closeEditPanel();
+            })
+            .catch(function(err) {
+                hideLoading();
+                alert('Error de red al aplicar cambios');
+            });
         }
 
         // ============================================================
@@ -1746,7 +2223,31 @@
                 if (urlVal) selectedImageUrl = urlVal;
             }
 
-            if (!selectedImageUrl || !currentImageTarget) {
+            if (!selectedImageUrl) {
+                alert('Selecciona una imagen primero');
+                return;
+            }
+
+            // If called from edit panel image field
+            if (window._editPanelImageKey) {
+                var key = window._editPanelImageKey;
+                var hiddenInput = document.querySelector('#editPanelBody input[data-key="' + key + '"][data-type="image"]');
+                if (hiddenInput) hiddenInput.value = selectedImageUrl;
+                var previewImg = hiddenInput ? hiddenInput.parentElement.querySelector('.edit-image-preview') : null;
+                if (previewImg) {
+                    previewImg.src = selectedImageUrl;
+                } else if (hiddenInput) {
+                    var newImg = document.createElement('img');
+                    newImg.src = selectedImageUrl;
+                    newImg.className = 'edit-image-preview';
+                    hiddenInput.parentElement.insertBefore(newImg, hiddenInput.parentElement.firstChild);
+                }
+                window._editPanelImageKey = null;
+                closeImagePicker();
+                return;
+            }
+
+            if (!currentImageTarget) {
                 alert('Selecciona una imagen primero');
                 return;
             }
