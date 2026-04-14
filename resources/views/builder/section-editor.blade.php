@@ -1113,10 +1113,6 @@
         <div class="topbar-title">{{ $page->title }}</div>
         <div class="topbar-actions">
             <span class="save-status" id="saveStatus">Sin cambios</span>
-            <button class="topbar-btn topbar-btn-ghost" onclick="toggleEffectsPanel()" title="Efectos">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                Efectos
-            </button>
             <button class="topbar-btn topbar-btn-ghost" onclick="toggleStylePanel()" title="Estilos">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/></svg>
                 Estilos

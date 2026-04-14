@@ -62,24 +62,24 @@ return [
       </div>
     </div>
     <div class="wc-contact-split-form-wrap">
-      <form class="wc-contact-split-form">
+      <form class="wc-contact-split-form" data-contact-form>
         <div class="wc-contact-split-form-row">
           <div class="wc-contact-split-field">
-            <label class="wc-contact-split-form-label">Nombre</label>
-            <input type="text" class="wc-contact-split-input" placeholder="Tu nombre">
+            <label class="wc-contact-split-form-label" for="csf-name">Nombre</label>
+            <input type="text" name="name" id="csf-name" class="wc-contact-split-input" placeholder="Tu nombre" required>
           </div>
           <div class="wc-contact-split-field">
-            <label class="wc-contact-split-form-label">Email</label>
-            <input type="email" class="wc-contact-split-input" placeholder="tu@email.com">
+            <label class="wc-contact-split-form-label" for="csf-email">Email</label>
+            <input type="email" name="email" id="csf-email" class="wc-contact-split-input" placeholder="tu@email.com" required>
           </div>
         </div>
         <div class="wc-contact-split-field">
-          <label class="wc-contact-split-form-label">Asunto</label>
-          <input type="text" class="wc-contact-split-input" placeholder="¿En qué podemos ayudarte?">
+          <label class="wc-contact-split-form-label" for="csf-subject">Asunto</label>
+          <input type="text" name="subject" id="csf-subject" class="wc-contact-split-input" placeholder="¿En qué podemos ayudarte?">
         </div>
         <div class="wc-contact-split-field">
-          <label class="wc-contact-split-form-label">Mensaje</label>
-          <textarea class="wc-contact-split-textarea" rows="4" placeholder="Cuéntanos sobre tu proyecto..."></textarea>
+          <label class="wc-contact-split-form-label" for="csf-message">Mensaje</label>
+          <textarea name="message" id="csf-message" class="wc-contact-split-textarea" rows="4" placeholder="Cuéntanos sobre tu proyecto..." required></textarea>
         </div>
         <button type="submit" class="wc-contact-split-btn">{{btn_text}}</button>
       </form>

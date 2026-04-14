@@ -79,7 +79,7 @@ class HtmlSanitizerService
                 'table[style|class],thead,tbody,tr,th[style|class],td[style|class],' .
                 'strong,em,b,i,u,s,br,hr[style|class],' .
                 'blockquote[style|class],pre[style|class],code,' .
-                'form[style|class|action|method],input[type|placeholder|style|class|name|value|required],textarea[placeholder|rows|style|class|name|required],select[style|class|name],option[value|selected],button[type|style|class|aria-label|aria-expanded],label[for|style|class],' .
+                'form[style|class|action|method|data-contact-form],input[type|placeholder|style|class|name|value|required],textarea[placeholder|rows|style|class|name|required],select[style|class|name],option[value|selected],button[type|style|class|aria-label|aria-expanded],label[for|style|class],' .
                 'iframe[src|width|height|style|class|frameborder|allowfullscreen|loading],' .
                 'video[src|controls|autoplay|loop|muted|style|class|width|height],source[src|type],' .
                 'mark[style|class],small[style|class],sub,sup'
@@ -114,6 +114,7 @@ class HtmlSanitizerService
                 $def->addElement('form', 'Block', 'Flow', 'Common', [
                     'action' => 'URI',
                     'method' => 'Enum#get,post',
+                    'data-contact-form' => 'Text',
                 ]);
                 $def->addElement('input', 'Inline', 'Empty', 'Common', [
                     'type' => 'Text',

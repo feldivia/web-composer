@@ -27,18 +27,18 @@ return [
       <h2 class="wc-contact-simple-title">{{title}}</h2>
       <p class="wc-contact-simple-subtitle">{{subtitle}}</p>
     </div>
-    <form class="wc-contact-simple-form">
+    <form class="wc-contact-simple-form" data-contact-form>
       <div class="wc-contact-simple-field">
-        <label class="wc-contact-simple-form-label">Nombre</label>
-        <input type="text" class="wc-contact-simple-input" placeholder="Tu nombre completo">
+        <label class="wc-contact-simple-form-label" for="cf-name">Nombre</label>
+        <input type="text" name="name" id="cf-name" class="wc-contact-simple-input" placeholder="Tu nombre completo" required>
       </div>
       <div class="wc-contact-simple-field">
-        <label class="wc-contact-simple-form-label">Email</label>
-        <input type="email" class="wc-contact-simple-input" placeholder="tu@email.com">
+        <label class="wc-contact-simple-form-label" for="cf-email">Email</label>
+        <input type="email" name="email" id="cf-email" class="wc-contact-simple-input" placeholder="tu@email.com" required>
       </div>
       <div class="wc-contact-simple-field">
-        <label class="wc-contact-simple-form-label">Mensaje</label>
-        <textarea class="wc-contact-simple-textarea" rows="5" placeholder="¿En qué podemos ayudarte?"></textarea>
+        <label class="wc-contact-simple-form-label" for="cf-message">Mensaje</label>
+        <textarea name="message" id="cf-message" class="wc-contact-simple-textarea" rows="5" placeholder="¿En qué podemos ayudarte?" required></textarea>
       </div>
       <button type="submit" class="wc-contact-simple-btn">{{btn_text}}</button>
     </form>
