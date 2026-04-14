@@ -21,11 +21,11 @@ class SiteSettings extends Page implements HasForms
 
     protected static ?string $navigationGroup = 'Sistema';
 
-    protected static ?string $navigationLabel = 'Site Settings';
+    protected static ?string $navigationLabel = 'Configuración';
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $title = 'Site Settings';
+    protected static ?string $title = 'Configuración del Sitio';
 
     protected static string $view = 'filament.pages.site-settings';
 
@@ -69,6 +69,14 @@ class SiteSettings extends Page implements HasForms
         'footer_text',
         'analytics_id',
         'meta_pixel_id',
+        'mail_to',
+        'mail_host',
+        'mail_port',
+        'mail_username',
+        'mail_password',
+        'mail_encryption',
+        'mail_from_address',
+        'mail_from_name',
     ];
 
     public function mount(): void
@@ -198,6 +206,61 @@ class SiteSettings extends Page implements HasForms
                             ->placeholder('123456789')
                             ->maxLength(50),
                     ])->columns(2),
+
+                Forms\Components\Section::make('Correo electrónico (SMTP)')
+                    ->description('Configura el servidor de correo para recibir notificaciones de formularios de contacto.')
+                    ->schema([
+                        Forms\Components\TextInput::make('mail_to')
+                            ->label('Email de destino')
+                            ->email()
+                            ->placeholder('tu@email.com')
+                            ->helperText('Los mensajes del formulario de contacto llegarán aquí')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
+                        Forms\Components\TextInput::make('mail_host')
+                            ->label('Servidor SMTP')
+                            ->placeholder('smtp.gmail.com')
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('mail_port')
+                            ->label('Puerto')
+                            ->placeholder('587')
+                            ->maxLength(5),
+
+                        Forms\Components\TextInput::make('mail_username')
+                            ->label('Usuario SMTP')
+                            ->placeholder('tu@gmail.com')
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('mail_password')
+                            ->label('Contraseña SMTP')
+                            ->password()
+                            ->revealable()
+                            ->placeholder('App password')
+                            ->maxLength(255),
+
+                        Forms\Components\Select::make('mail_encryption')
+                            ->label('Encriptación')
+                            ->options([
+                                'tls' => 'TLS (recomendado)',
+                                'ssl' => 'SSL',
+                                '' => 'Ninguna',
+                            ])
+                            ->default('tls'),
+
+                        Forms\Components\TextInput::make('mail_from_address')
+                            ->label('Email remitente')
+                            ->email()
+                            ->placeholder('noreply@tusitio.com')
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('mail_from_name')
+                            ->label('Nombre remitente')
+                            ->placeholder('Mi Sitio Web')
+                            ->maxLength(255),
+                    ])->columns(2)
+                    ->collapsed(),
             ])
             ->statePath('data');
     }
@@ -213,7 +276,7 @@ class SiteSettings extends Page implements HasForms
         }
 
         Notification::make()
-            ->title('Settings saved successfully')
+            ->title('Configuración guardada')
             ->success()
             ->send();
     }
