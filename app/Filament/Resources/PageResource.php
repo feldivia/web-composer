@@ -167,7 +167,7 @@ class PageResource extends Resource
                             && !empty($content['html'])
                             && trim($content['html']) !== '';
 
-                        return $hasContent ? 'Editar' : 'Crear con IA';
+                        return $hasContent ? 'Diseñar' : 'Crear con IA';
                     })
                     ->icon(function (Page $record): string {
                         $content = $record->content;
@@ -202,7 +202,8 @@ class PageResource extends Resource
                     ->icon('heroicon-o-eye')
                     ->color('gray')
                     ->url(fn (Page $record): string => route('page.preview', $record), shouldOpenInNewTab: true),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Configurar'),
                 Tables\Actions\Action::make('duplicate')
                     ->label('Duplicar')
                     ->icon('heroicon-o-document-duplicate')
