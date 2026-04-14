@@ -191,6 +191,50 @@
         .form-error.visible { display: block; }
 
         /* ---- Section Picker (Step 2) ---- */
+        /* Template presets */
+        .template-presets {
+            margin-bottom: 24px;
+        }
+        .template-presets-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .template-card {
+            padding: 14px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            background: #fff;
+        }
+        .template-card:hover {
+            border-color: #a5b4fc;
+            background: #f5f3ff;
+            transform: translateY(-2px);
+        }
+        .template-card.active {
+            border-color: #6366f1;
+            background: #eef2ff;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+        }
+        .template-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+        .template-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .template-desc {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
         .section-picker-layout {
             display: grid;
             grid-template-columns: 1fr 340px;
@@ -810,7 +854,11 @@
         .btn-skip:hover { color: rgba(255,255,255,0.7); }
 
         /* ---- Responsive ---- */
+        @media (max-width: 1024px) {
+            .template-presets-grid { grid-template-columns: repeat(3, 1fr); }
+        }
         @media (max-width: 768px) {
+            .template-presets-grid { grid-template-columns: repeat(2, 1fr); }
             .section-picker-layout {
                 grid-template-columns: 1fr;
             }
@@ -897,7 +945,53 @@
         {{-- Step 2: Section Picker --}}
         <div class="wizard-step" data-step="2">
             <h1 class="step-title">Elige tus secciones</h1>
-            <p class="step-subtitle">Selecciona las secciones para tu pagina y arrastra para ordenarlas.</p>
+            <p class="step-subtitle">Comienza con un template o arma tu página desde cero.</p>
+
+            {{-- Template Presets --}}
+            <div class="template-presets" id="templatePresets">
+                <div class="template-presets-grid">
+                    <div class="template-card active" data-template="custom" onclick="selectTemplate('custom')">
+                        <div class="template-icon">✏️</div>
+                        <div class="template-name">Personalizado</div>
+                        <div class="template-desc">Elige las secciones que quieras</div>
+                    </div>
+                    <div class="template-card" data-template="landing" onclick="selectTemplate('landing')">
+                        <div class="template-icon">🚀</div>
+                        <div class="template-name">Landing Page</div>
+                        <div class="template-desc">Hero, servicios, testimonios, CTA, contacto</div>
+                    </div>
+                    <div class="template-card" data-template="professional" onclick="selectTemplate('professional')">
+                        <div class="template-icon">👤</div>
+                        <div class="template-name">Perfil Profesional</div>
+                        <div class="template-desc">Presentación personal, servicios, portafolio</div>
+                    </div>
+                    <div class="template-card" data-template="business" onclick="selectTemplate('business')">
+                        <div class="template-icon">🏢</div>
+                        <div class="template-name">Negocio / Empresa</div>
+                        <div class="template-desc">Empresa, equipo, clientes, proceso de trabajo</div>
+                    </div>
+                    <div class="template-card" data-template="restaurant" onclick="selectTemplate('restaurant')">
+                        <div class="template-icon">🍽️</div>
+                        <div class="template-name">Restaurante / Café</div>
+                        <div class="template-desc">Menú, galería, horarios, reservas</div>
+                    </div>
+                    <div class="template-card" data-template="clinic" onclick="selectTemplate('clinic')">
+                        <div class="template-icon">🏥</div>
+                        <div class="template-name">Clínica / Consultorio</div>
+                        <div class="template-desc">Servicios médicos, equipo, testimonios, agenda</div>
+                    </div>
+                    <div class="template-card" data-template="portfolio" onclick="selectTemplate('portfolio')">
+                        <div class="template-icon">🎨</div>
+                        <div class="template-name">Portafolio Creativo</div>
+                        <div class="template-desc">Galería de trabajos, sobre mí, contacto</div>
+                    </div>
+                    <div class="template-card" data-template="event" onclick="selectTemplate('event')">
+                        <div class="template-icon">🎪</div>
+                        <div class="template-name">Evento / Conferencia</div>
+                        <div class="template-desc">Hero con fecha, speakers, agenda, tickets</div>
+                    </div>
+                </div>
+            </div>
 
             <div class="section-picker-layout">
                 {{-- Catalog --}}
@@ -1144,10 +1238,43 @@
         var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         // Default selected section IDs
-        var defaultSections = [
-            'hero-split', 'services-cards', 'about-split', 'stats-bar',
-            'testimonials-grid', 'cta-gradient', 'contact-split', 'footer-4col'
-        ];
+        var templatePresets = {
+            'custom': [],
+            'landing': [
+                'navbar-modern', 'hero-split', 'services-cards', 'stats-bar',
+                'testimonials-carousel', 'cta-gradient', 'contact-split', 'footer-4col'
+            ],
+            'professional': [
+                'navbar-modern', 'hero-centered', 'about-split', 'services-cards',
+                'stats-bar', 'testimonials-grid', 'contact-simple', 'footer-simple'
+            ],
+            'business': [
+                'navbar-modern', 'hero-split', 'logo-cloud', 'services-cards-4',
+                'about-cards', 'process-timeline', 'team-grid', 'testimonials-carousel',
+                'cta-gradient', 'contact-split', 'footer-4col'
+            ],
+            'restaurant': [
+                'navbar-transparent', 'hero-dark', 'services-cards', 'gallery-grid',
+                'testimonials-grid', 'quote-section', 'contact-split', 'footer-4col'
+            ],
+            'clinic': [
+                'navbar-modern', 'hero-split', 'services-cards-4', 'about-split',
+                'stats-counters', 'testimonials-carousel', 'faq-accordion',
+                'contact-split', 'footer-4col'
+            ],
+            'portfolio': [
+                'navbar-transparent', 'hero-minimal', 'gallery-grid', 'about-split',
+                'testimonials-featured', 'cta-split', 'contact-simple', 'footer-simple'
+            ],
+            'event': [
+                'navbar-transparent', 'hero-dark', 'stats-bar', 'services-cards',
+                'pricing-3-columns', 'testimonials-grid', 'faq-accordion',
+                'cta-gradient', 'contact-split', 'footer-4col'
+            ]
+        };
+
+        var currentTemplate = 'custom';
+        var defaultSections = [];
 
         // ============================================================
         // Wizard State
@@ -1160,6 +1287,55 @@
         // ============================================================
         // Build Section Catalog
         // ============================================================
+        function selectTemplate(templateKey) {
+            currentTemplate = templateKey;
+
+            // Update active state
+            document.querySelectorAll('.template-card').forEach(function(card) {
+                card.classList.toggle('active', card.dataset.template === templateKey);
+            });
+
+            // Clear current selections
+            selectedSections = [];
+
+            // Load template sections
+            var preset = templatePresets[templateKey] || [];
+
+            // Flatten all sections for lookup
+            var allSections = {};
+            for (var catKey in sectionLibrary) {
+                var cat = sectionLibrary[catKey];
+                var sections = cat.sections || [];
+                for (var i = 0; i < sections.length; i++) {
+                    allSections[sections[i].id] = sections[i];
+                }
+            }
+
+            // Pre-select template sections
+            for (var d = 0; d < preset.length; d++) {
+                var secId = preset[d];
+                if (allSections[secId]) {
+                    selectedSections.push({
+                        id: secId,
+                        name: allSections[secId].name || secId,
+                        icon: allSections[secId].icon || ''
+                    });
+                }
+            }
+
+            // Update catalog checkmarks and selected panel
+            updateCatalogSelection();
+            renderSelectedList();
+        }
+
+        function updateCatalogSelection() {
+            document.querySelectorAll('.catalog-card').forEach(function(card) {
+                var secId = card.dataset.sectionId;
+                var isSelected = selectedSections.some(function(s) { return s.id === secId; });
+                card.classList.toggle('selected', isSelected);
+            });
+        }
+
         function buildCatalog() {
             var catalog = document.getElementById('sectionCatalog');
             catalog.innerHTML = '';
