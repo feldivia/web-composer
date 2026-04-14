@@ -26,7 +26,7 @@ class SecurityHeaders
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://www.googletagmanager.com https://connect.facebook.net https://unpkg.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "img-src 'self' https://picsum.photos https://fastly.picsum.photos data: blob:",
+            "img-src 'self' http: https: data: blob:",
             "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://www.google.com",
             "connect-src 'self'",
             "media-src 'self'",
