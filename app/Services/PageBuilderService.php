@@ -11,6 +11,8 @@ use App\Models\Page;
  *
  * El campo `content` de la página almacena un JSON con las claves:
  * html, components, styles. El campo `css` almacena los estilos generados.
+ *
+ * SEGURIDAD: El HTML y CSS se sanitizan al guardar para prevenir XSS almacenado.
  */
 class PageBuilderService
 {
@@ -61,13 +63,24 @@ class PageBuilderService
      */
     public function store(Page $page, array $data): bool
     {
+        $html = $data['html'] ?? '';
+        $css = $data['css'] ?? '';
+
+        // Sanitizar HTML y CSS al guardar para prevenir XSS almacenado
         $page->content = [
-            'html' => $data['html'] ?? '',
+            'html' => HtmlSanitizerService::sanitize($html),
             'components' => $data['components'] ?? [],
             'styles' => $data['styles'] ?? [],
+            // Preservar datos del section editor si existen
+            'sections' => $data['sections'] ?? ($page->content['sections'] ?? []),
+            'section_content' => $data['section_content'] ?? ($page->content['section_content'] ?? []),
+            'colors' => $data['colors'] ?? ($page->content['colors'] ?? []),
+            'fonts' => $data['fonts'] ?? ($page->content['fonts'] ?? []),
+            'business_name' => $data['business_name'] ?? ($page->content['business_name'] ?? ''),
+            'business_description' => $data['business_description'] ?? ($page->content['business_description'] ?? ''),
         ];
 
-        $page->css = $data['css'] ?? '';
+        $page->css = HtmlSanitizerService::sanitizeCss($css);
 
         return $page->save();
     }

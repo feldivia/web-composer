@@ -22,7 +22,7 @@ class MediaUploadController extends Controller
     public function upload(Request $request): JsonResponse
     {
         $request->validate([
-            'file' => ['required', 'file', 'max:10240', 'mimes:jpg,jpeg,png,gif,webp,svg,mp4,pdf'],
+            'file' => ['required', 'file', 'max:10240', 'mimes:jpg,jpeg,png,gif,webp,mp4,pdf'],
         ]);
 
         $fileData = $this->mediaService->upload($request->file('file'));
@@ -53,9 +53,10 @@ class MediaUploadController extends Controller
      */
     public function destroy(string $path): JsonResponse
     {
-        // Prevent path traversal
+        // Prevent path traversal — solo permitir rutas dentro de uploads/ o media/
         $path = ltrim($path, '/');
-        if (str_contains($path, '..') || str_starts_with($path, '/') || !str_starts_with($path, 'uploads/')) {
+        if (str_contains($path, '..') || str_starts_with($path, '/') ||
+            (!str_starts_with($path, 'uploads/') && !str_starts_with($path, 'media/'))) {
             return response()->json(['error' => 'Ruta no permitida.'], 403);
         }
 

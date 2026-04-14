@@ -199,7 +199,7 @@ class SectionEditorController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error al agregar seccion: ' . $e->getMessage(),
+                'message' => 'Error al agregar seccion. Intenta de nuevo.',
             ], 500);
         }
     }

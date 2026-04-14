@@ -7,11 +7,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Services\PageBuilderService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PageBuilderController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(
         private readonly PageBuilderService $pageBuilderService,
     ) {}
@@ -21,6 +24,8 @@ class PageBuilderController extends Controller
      */
     public function load(Page $page): JsonResponse
     {
+        $this->authorize('view', $page);
+
         $data = $this->pageBuilderService->load($page);
 
         return response()->json($data);
@@ -31,11 +36,20 @@ class PageBuilderController extends Controller
      */
     public function store(Request $request, Page $page): JsonResponse
     {
+        $this->authorize('update', $page);
+
         $validated = $request->validate([
             'html' => ['required', 'string'],
-            'css' => ['required', 'string'],
-            'components' => ['required', 'array'],
-            'styles' => ['required', 'array'],
+            'css' => ['nullable', 'string'],
+            'components' => ['nullable', 'array'],
+            'styles' => ['nullable', 'array'],
+            // Section editor fields (optional)
+            'sections' => ['nullable', 'array'],
+            'section_content' => ['nullable', 'array'],
+            'colors' => ['nullable', 'array'],
+            'fonts' => ['nullable', 'array'],
+            'business_name' => ['nullable', 'string', 'max:255'],
+            'business_description' => ['nullable', 'string', 'max:5000'],
         ]);
 
         $success = $this->pageBuilderService->store($page, $validated);

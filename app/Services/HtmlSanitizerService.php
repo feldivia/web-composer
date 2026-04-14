@@ -27,7 +27,7 @@ class HtmlSanitizerService
     }
 
     /**
-     * Sanitiza CSS eliminando expresiones y URLs peligrosas.
+     * Sanitiza CSS eliminando expresiones, imports y URLs peligrosas.
      */
     public static function sanitizeCss(string $css): string
     {
@@ -35,11 +35,21 @@ class HtmlSanitizerService
             return '';
         }
 
-        $css = preg_replace('/url\s*\(\s*["\']?\s*javascript:/i', 'url(about:blank', $css);
+        // Bloquear todas las variantes de @import (url(), string, etc.)
+        $css = preg_replace('/@import\s+/i', '/* blocked @import */ ', $css);
+        // Bloquear @charset, @namespace (pueden causar encoding attacks)
+        $css = preg_replace('/@charset\s+/i', '/* blocked @charset */ ', $css);
+        $css = preg_replace('/@namespace\s+/i', '/* blocked @namespace */ ', $css);
+        // Bloquear javascript: en URLs (incluir variantes con escapes)
+        $css = preg_replace('/url\s*\(\s*["\']?\s*j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\s*:/i', 'url(about:blank', $css);
+        // Bloquear expression() (IE)
         $css = preg_replace('/expression\s*\(/i', '/* blocked */(', $css);
-        $css = preg_replace('/@import\s+url\s*\(\s*["\']?https?:/i', '/* blocked @import */', $css);
+        // Bloquear behavior (IE)
         $css = preg_replace('/behavior\s*:/i', '/* blocked */', $css);
+        // Bloquear -moz-binding (Firefox legacy)
         $css = preg_replace('/-moz-binding\s*:/i', '/* blocked */', $css);
+        // Bloquear data: URLs en CSS (pueden contener scripts)
+        $css = preg_replace('/url\s*\(\s*["\']?\s*data\s*:/i', 'url(about:blank', $css);
 
         return $css;
     }
@@ -76,6 +86,8 @@ class HtmlSanitizerService
             );
 
             $config->set('CSS.AllowTricky', true);
+            // CSS.Trusted=true necesario para estilos inline de secciones premium
+            // La sanitizacion de CSS se hace via sanitizeCss() con regex
             $config->set('CSS.Trusted', true);
             $config->set('Attr.AllowedFrameTargets', ['_blank', '_self']);
             $config->set('HTML.SafeIframe', true);
@@ -156,7 +168,14 @@ class HtmlSanitizerService
                 $def->addAttribute('iframe', 'loading', 'Enum#lazy,eager');
 
                 // Data attributes for JS effects on all elements (native + custom)
-                $dataAttrs = ['data-reveal', 'data-count', 'data-count-suffix', 'data-accordion', 'data-menu-toggle', 'data-mobile-menu', 'data-scroll-top'];
+                $dataAttrs = [
+                    'data-reveal', 'data-count', 'data-count-suffix', 'data-accordion',
+                    'data-menu-toggle', 'data-mobile-menu', 'data-scroll-top',
+                    'data-animate', 'data-animate-delay', 'data-hover', 'data-parallax',
+                    'data-typewriter', 'data-marquee', 'data-lightbox', 'data-carousel',
+                    'data-tabs', 'data-sticky', 'data-progress', 'data-dismiss',
+                    'data-video-src', 'data-pricing-toggle', 'data-before-after',
+                ];
                 // Custom HTML5 elements
                 $customElements = ['section', 'button', 'details', 'nav'];
                 foreach ($customElements as $el) {

@@ -156,7 +156,7 @@ class AIWizardController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error al generar la pagina: ' . $e->getMessage(),
+                'message' => 'Error al generar la pagina. Intenta de nuevo.',
             ], 500);
         }
     }

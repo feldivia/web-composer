@@ -12,7 +12,7 @@ return [
 
     'media' => [
         'max_file_size' => env('MEDIA_MAX_FILE_SIZE', 10240),
-        'allowed_types' => explode(',', env('MEDIA_ALLOWED_TYPES', 'jpg,jpeg,png,gif,webp,svg,mp4,pdf')),
+        'allowed_types' => explode(',', env('MEDIA_ALLOWED_TYPES', 'jpg,jpeg,png,gif,webp,mp4,pdf')),
         'disk' => env('MEDIA_DISK', 'public'),
     ],
 
