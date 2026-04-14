@@ -494,6 +494,267 @@
             margin: 16px 0 8px 0;
         }
         .modal-category-title:first-child { margin-top: 0; }
+
+        /* ---- Loading Overlay ---- */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(6px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+        .loading-overlay.visible { display: flex; }
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+        }
+        .loading-subtext {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        /* ---- Image hover overlay ---- */
+        .section-wrapper img {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .section-wrapper img:hover {
+            opacity: 0.8;
+        }
+        .img-overlay-hint {
+            position: absolute;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 6px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .section-wrapper img:hover + .img-overlay-hint,
+        .img-overlay-hint.visible { opacity: 1; }
+
+        /* ---- Image Picker Modal ---- */
+        .image-picker-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(0,0,0,0.55);
+            align-items: center;
+            justify-content: center;
+        }
+        .image-picker-overlay.visible { display: flex; }
+        .image-picker-modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 680px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .ip-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .ip-header h3 { font-size: 16px; font-weight: 600; color: #1e293b; }
+        .ip-tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .ip-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .ip-tab:hover { color: #1e293b; }
+        .ip-tab.active { color: #6366f1; border-bottom-color: #6366f1; }
+        .ip-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            min-height: 300px;
+        }
+        .ip-dropzone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ip-dropzone:hover, .ip-dropzone.dragover {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+        .ip-dropzone-icon { font-size: 32px; margin-bottom: 8px; }
+        .ip-dropzone-text { font-size: 14px; color: #475569; }
+        .ip-dropzone-hint { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+        .ip-progress {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-top: 16px;
+            overflow: hidden;
+            display: none;
+        }
+        .ip-progress.visible { display: block; }
+        .ip-progress-bar {
+            height: 100%;
+            background: #6366f1;
+            border-radius: 2px;
+            width: 0;
+            transition: width 0.3s;
+        }
+        .ip-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .ip-gallery-item {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .ip-gallery-item:hover { border-color: #6366f1; }
+        .ip-gallery-item.selected { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.3); }
+        .ip-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .ip-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .ip-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+        .ip-btn-cancel { background: #f1f5f9; border: 1px solid #d1d5db; color: #475569; }
+        .ip-btn-cancel:hover { background: #e2e8f0; }
+        .ip-btn-apply { background: #6366f1; border: none; color: #fff; }
+        .ip-btn-apply:hover { background: #4f46e5; }
+        .ip-gallery-empty { text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
+        .ip-url-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            margin-top: 16px;
+        }
+        .ip-url-input:focus { outline: none; border-color: #6366f1; }
+
+        /* ---- Effects Panel ---- */
+        .effects-panel {
+            position: fixed;
+            top: 52px;
+            right: 0;
+            bottom: 0;
+            width: 320px;
+            background: #fff;
+            border-left: 1px solid #e2e8f0;
+            z-index: 100;
+            overflow-y: auto;
+            padding: 20px;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+        }
+        .effects-panel.open { transform: translateX(0); }
+        .effect-group {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .effect-group:last-child { border-bottom: none; }
+        .effect-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .effect-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: #1e293b;
+            cursor: pointer;
+        }
+        .effect-select:focus { outline: none; border-color: #6366f1; }
+        .effect-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            background: #eef2ff;
+            color: #6366f1;
+            font-size: 10px;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+        .effect-hint {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -507,6 +768,10 @@
         <div class="topbar-title">{{ $page->title }}</div>
         <div class="topbar-actions">
             <span class="save-status" id="saveStatus">Sin cambios</span>
+            <button class="topbar-btn topbar-btn-ghost" onclick="toggleEffectsPanel()" title="Efectos">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Efectos
+            </button>
             <button class="topbar-btn topbar-btn-ghost" onclick="toggleStylePanel()" title="Estilos">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/></svg>
                 Estilos
@@ -642,6 +907,123 @@
             <div id="modalSectionsList">
                 {{-- Populated by JS --}}
             </div>
+        </div>
+    </div>
+
+    {{-- Loading Overlay --}}
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Procesando...</div>
+        <div class="loading-subtext" id="loadingSubtext">Esto puede tomar unos segundos</div>
+    </div>
+
+    {{-- Image Picker Modal --}}
+    <div class="image-picker-overlay" id="imagePickerOverlay">
+        <div class="image-picker-modal">
+            <div class="ip-header">
+                <h3>Seleccionar imagen</h3>
+                <button class="modal-close" onclick="closeImagePicker()">&times;</button>
+            </div>
+            <div class="ip-tabs">
+                <button class="ip-tab active" onclick="switchImageTab('upload')">Subir imagen</button>
+                <button class="ip-tab" onclick="switchImageTab('gallery')">Galeria</button>
+                <button class="ip-tab" onclick="switchImageTab('url')">URL externa</button>
+            </div>
+            <div class="ip-body">
+                <div id="ipUploadTab">
+                    <div class="ip-dropzone" id="ipDropzone">
+                        <div class="ip-dropzone-icon">&#128247;</div>
+                        <div class="ip-dropzone-text">Arrastra una imagen aqui o haz clic para seleccionar</div>
+                        <div class="ip-dropzone-hint">JPG, PNG, WebP, GIF — Max 10MB</div>
+                        <input type="file" id="ipFileInput" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;">
+                    </div>
+                    <div class="ip-progress" id="ipProgress">
+                        <div class="ip-progress-bar" id="ipProgressBar"></div>
+                    </div>
+                </div>
+                <div id="ipGalleryTab" style="display:none;">
+                    <div class="ip-gallery-grid" id="ipGalleryGrid"></div>
+                    <div class="ip-gallery-empty" id="ipGalleryEmpty" style="display:none;">No hay imagenes subidas aun</div>
+                </div>
+                <div id="ipUrlTab" style="display:none;">
+                    <p style="font-size:13px;color:#475569;margin-bottom:8px;">Ingresa la URL de una imagen externa:</p>
+                    <input type="url" class="ip-url-input" id="ipUrlInput" placeholder="https://ejemplo.com/imagen.jpg">
+                    <div id="ipUrlPreview" style="margin-top:16px;text-align:center;"></div>
+                </div>
+            </div>
+            <div class="ip-footer">
+                <button class="ip-btn ip-btn-cancel" onclick="closeImagePicker()">Cancelar</button>
+                <button class="ip-btn ip-btn-apply" id="ipApplyBtn" onclick="applySelectedImage()">Usar imagen</button>
+            </div>
+        </div>
+    </div>
+
+    {{-- Effects Panel --}}
+    <div class="effects-panel" id="effectsPanel">
+        <div class="style-panel-title">
+            Efectos
+            <button class="style-panel-close" onclick="toggleEffectsPanel()">&times;</button>
+        </div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:16px;">Selecciona una seccion y aplica efectos de animacion.</p>
+        <div id="effectsTarget" style="font-size:13px;color:#6366f1;font-weight:500;margin-bottom:16px;display:none;"></div>
+
+        <div class="effect-group">
+            <div class="effect-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Animacion al hacer scroll
+            </div>
+            <select class="effect-select" id="effectAnimate" onchange="applyEffect()">
+                <option value="">Ninguna</option>
+                <option value="fade-up">Aparecer desde abajo</option>
+                <option value="fade-down">Aparecer desde arriba</option>
+                <option value="fade-left">Aparecer desde la izquierda</option>
+                <option value="fade-right">Aparecer desde la derecha</option>
+                <option value="fade-zoom">Zoom de entrada</option>
+                <option value="flip-up">Voltear hacia arriba</option>
+            </select>
+            <div class="effect-hint">La seccion se anima cuando el usuario llega a ella</div>
+        </div>
+
+        <div class="effect-group">
+            <div class="effect-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+                Retardo de animacion
+            </div>
+            <select class="effect-select" id="effectDelay" onchange="applyEffect()">
+                <option value="">Sin retardo</option>
+                <option value="200">200ms</option>
+                <option value="400">400ms</option>
+                <option value="600">600ms</option>
+            </select>
+        </div>
+
+        <div class="effect-group">
+            <div class="effect-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6H4zM14 4h6v6h-6z"/><path d="M4 4h6v6H4zM14 14h6v6h-6z"/></svg>
+                Efecto hover
+            </div>
+            <select class="effect-select" id="effectHover" onchange="applyEffect()">
+                <option value="">Ninguno</option>
+                <option value="scale">Escalar</option>
+                <option value="shadow">Sombra</option>
+                <option value="lift">Elevar</option>
+                <option value="glow">Brillo</option>
+            </select>
+            <div class="effect-hint">Efecto al pasar el mouse sobre la seccion</div>
+        </div>
+
+        <div class="effect-group">
+            <div class="effect-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+                Parallax
+            </div>
+            <select class="effect-select" id="effectParallax" onchange="applyEffect()">
+                <option value="">Desactivado</option>
+                <option value="0.1">Suave (0.1)</option>
+                <option value="0.2">Medio (0.2)</option>
+                <option value="0.3">Fuerte (0.3)</option>
+            </select>
+            <div class="effect-hint">Desplazamiento en profundidad al hacer scroll</div>
         </div>
     </div>
 
@@ -802,12 +1184,8 @@
         }
 
         function regenerateSection(index) {
-            var sectionId = sectionIds[index];
-            var statusEl = document.getElementById('saveStatus');
-            statusEl.textContent = 'Regenerando...';
-            statusEl.className = 'save-status saving';
+            showLoading('Regenerando seccion con IA...', 'Generando nuevo contenido');
 
-            // Call wizard generate endpoint for just this section
             fetch(@json(route('builder.wizard.generate', $page)), {
                 method: 'POST',
                 headers: {
@@ -828,19 +1206,22 @@
                 if (data.success) {
                     window.location.reload();
                 } else {
+                    hideLoading();
+                    var statusEl = document.getElementById('saveStatus');
                     statusEl.textContent = 'Error al regenerar';
                     statusEl.className = 'save-status error';
                 }
             })
             .catch(function() {
+                hideLoading();
+                var statusEl = document.getElementById('saveStatus');
                 statusEl.textContent = 'Error al regenerar';
                 statusEl.className = 'save-status error';
             });
         }
 
         function rebuildPage() {
-            // Reload page to re-render with new section order
-            // For a smooth experience we simply reload
+            showLoading('Actualizando pagina...', 'Guardando cambios');
             savePage(function() {
                 window.location.reload();
             });
@@ -894,19 +1275,9 @@
 
         function addSection(sectionId) {
             closeAddModal();
+            showLoading('Agregando seccion...', 'Generando contenido con IA');
 
-            if (addInsertIndex === -1) {
-                sectionIds.push(sectionId);
-            } else {
-                sectionIds.splice(addInsertIndex, 0, sectionId);
-            }
-
-            // Regenerate the whole page with new sections
-            var statusEl = document.getElementById('saveStatus');
-            statusEl.textContent = 'Agregando seccion...';
-            statusEl.className = 'save-status saving';
-
-            fetch(@json(route('builder.wizard.generate', $page)), {
+            fetch(@json(route('builder.sections.add', $page)), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -914,26 +1285,104 @@
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    business_name: businessName,
-                    business_description: businessDescription,
-                    sections: sectionIds,
-                    colors: colors,
-                    fonts: fonts
+                    section_id: sectionId,
+                    insert_index: addInsertIndex
                 })
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (data.success) {
-                    window.location.reload();
+                    // Actualizar estado local
+                    sectionIds = data.section_ids || sectionIds;
+                    if (data.section_content) {
+                        sectionContent[sectionId] = data.section_content;
+                    }
+
+                    // Inyectar HTML en el DOM
+                    var preview = document.getElementById('pagePreview');
+                    var wrappers = preview.querySelectorAll('.section-wrapper');
+                    var meta = getSectionMeta(sectionId);
+
+                    // Crear nuevo wrapper
+                    var newWrapper = document.createElement('div');
+                    newWrapper.className = 'section-wrapper';
+                    newWrapper.setAttribute('data-section-id', sectionId);
+                    newWrapper.innerHTML =
+                        '<div class="section-toolbar">' +
+                            '<button class="toolbar-btn" title="Subir">&#9650;</button>' +
+                            '<button class="toolbar-btn" title="Bajar">&#9660;</button>' +
+                            '<button class="toolbar-btn" title="Regenerar con IA"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>' +
+                            '<button class="toolbar-btn danger" title="Eliminar">&times;</button>' +
+                        '</div>' +
+                        data.html;
+
+                    // Crear gap
+                    var newGap = document.createElement('div');
+                    newGap.className = 'add-section-gap';
+                    newGap.innerHTML = '<button class="add-section-btn">+ Agregar seccion</button>';
+
+                    // Insertar en posicion correcta
+                    var gaps = preview.querySelectorAll('.add-section-gap');
+                    if (addInsertIndex >= 0 && gaps[addInsertIndex]) {
+                        gaps[addInsertIndex].after(newWrapper);
+                        newWrapper.after(newGap);
+                    } else {
+                        // Al final (antes del gap final)
+                        var lastGap = gaps[gaps.length - 1];
+                        if (lastGap) {
+                            lastGap.before(newWrapper);
+                            lastGap.before(newGap);
+                        }
+                    }
+
+                    // Actualizar CSS
+                    if (data.css) {
+                        document.getElementById('sectionStyles').textContent = data.css;
+                    }
+
+                    // Reconectar eventos
+                    rebindToolbarEvents();
+                    enableInlineEditing();
+                    enableImageClicks();
+                    buildSidebar();
+                    markDirty();
+                    hideLoading();
+
+                    // Scroll a la nueva seccion
+                    newWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 } else {
-                    statusEl.textContent = 'Error al agregar seccion';
-                    statusEl.className = 'save-status error';
+                    hideLoading();
+                    alert('Error: ' + (data.message || 'No se pudo agregar la seccion'));
                 }
             })
-            .catch(function() {
-                statusEl.textContent = 'Error';
-                statusEl.className = 'save-status error';
+            .catch(function(err) {
+                hideLoading();
+                alert('Error de conexion al agregar seccion');
             });
+        }
+
+        function rebindToolbarEvents() {
+            var wrappers = document.querySelectorAll('.section-wrapper');
+            for (var i = 0; i < wrappers.length; i++) {
+                (function(idx) {
+                    var toolbar = wrappers[idx].querySelector('.section-toolbar');
+                    if (!toolbar) return;
+                    var btns = toolbar.querySelectorAll('.toolbar-btn');
+                    if (btns[0]) btns[0].onclick = function() { moveSection(idx, -1); };
+                    if (btns[1]) btns[1].onclick = function() { moveSection(idx, 1); };
+                    if (btns[2]) btns[2].onclick = function() { regenerateSection(idx); };
+                    if (btns[3]) btns[3].onclick = function() { deleteSection(idx); };
+                })(i);
+            }
+
+            // Rebind add-section-gap buttons
+            var gaps = document.querySelectorAll('.add-section-gap');
+            for (var g = 0; g < gaps.length; g++) {
+                (function(idx) {
+                    var btn = gaps[idx].querySelector('.add-section-btn');
+                    if (btn) btn.onclick = function() { openAddModal(idx); };
+                })(g);
+            }
         }
 
         // ============================================================
@@ -946,12 +1395,18 @@
             var panel = document.getElementById('stylePanel');
             var main = document.getElementById('mainContent');
 
+            // Close effects panel if open
+            if (stylePanelOpen && effectsPanelOpen) {
+                effectsPanelOpen = false;
+                document.getElementById('effectsPanel').classList.remove('open');
+            }
+
             if (stylePanelOpen) {
                 panel.classList.add('open');
                 main.classList.add('style-panel-open');
             } else {
                 panel.classList.remove('open');
-                main.classList.remove('style-panel-open');
+                if (!effectsPanelOpen) main.classList.remove('style-panel-open');
             }
         }
 
@@ -1108,10 +1563,325 @@
         });
 
         // ============================================================
+        // Loading Overlay
+        // ============================================================
+        function showLoading(text, subtext) {
+            document.getElementById('loadingText').textContent = text || 'Procesando...';
+            document.getElementById('loadingSubtext').textContent = subtext || '';
+            document.getElementById('loadingOverlay').classList.add('visible');
+        }
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('visible');
+        }
+
+        // ============================================================
+        // Image Picker
+        // ============================================================
+        var currentImageTarget = null;
+        var selectedImageUrl = '';
+        var galleryCache = null;
+
+        function enableImageClicks() {
+            var imgs = document.querySelectorAll('.section-wrapper img');
+            imgs.forEach(function(img) {
+                if (img._imageClickBound) return;
+                img._imageClickBound = true;
+                img.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    currentImageTarget = img;
+                    selectedImageUrl = '';
+                    openImagePicker();
+                });
+            });
+        }
+
+        function openImagePicker() {
+            document.getElementById('imagePickerOverlay').classList.add('visible');
+            switchImageTab('upload');
+        }
+
+        function closeImagePicker() {
+            document.getElementById('imagePickerOverlay').classList.remove('visible');
+            currentImageTarget = null;
+            selectedImageUrl = '';
+        }
+
+        function switchImageTab(tab) {
+            document.querySelectorAll('.ip-tab').forEach(function(t, i) {
+                t.classList.toggle('active', (i === 0 && tab === 'upload') || (i === 1 && tab === 'gallery') || (i === 2 && tab === 'url'));
+            });
+            document.getElementById('ipUploadTab').style.display = tab === 'upload' ? '' : 'none';
+            document.getElementById('ipGalleryTab').style.display = tab === 'gallery' ? '' : 'none';
+            document.getElementById('ipUrlTab').style.display = tab === 'url' ? '' : 'none';
+
+            if (tab === 'gallery') loadGallery();
+        }
+
+        function loadGallery() {
+            if (galleryCache) {
+                renderGallery(galleryCache);
+                return;
+            }
+            var grid = document.getElementById('ipGalleryGrid');
+            grid.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;">Cargando...</div>';
+
+            fetch('/api/media', {
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' }
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                galleryCache = data.data || data || [];
+                renderGallery(galleryCache);
+            })
+            .catch(function() {
+                grid.innerHTML = '';
+                document.getElementById('ipGalleryEmpty').style.display = 'block';
+            });
+        }
+
+        function renderGallery(items) {
+            var grid = document.getElementById('ipGalleryGrid');
+            var empty = document.getElementById('ipGalleryEmpty');
+            grid.innerHTML = '';
+
+            if (!items || items.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            items.forEach(function(item) {
+                var url = item.url || item.path || item;
+                var div = document.createElement('div');
+                div.className = 'ip-gallery-item';
+                div.innerHTML = '<img src="' + url + '" alt="" loading="lazy">';
+                div.onclick = function() {
+                    document.querySelectorAll('.ip-gallery-item').forEach(function(g) { g.classList.remove('selected'); });
+                    div.classList.add('selected');
+                    selectedImageUrl = url;
+                };
+                grid.appendChild(div);
+            });
+        }
+
+        function applySelectedImage() {
+            // Check URL tab
+            if (document.getElementById('ipUrlTab').style.display !== 'none') {
+                var urlVal = document.getElementById('ipUrlInput').value.trim();
+                if (urlVal) selectedImageUrl = urlVal;
+            }
+
+            if (!selectedImageUrl || !currentImageTarget) {
+                alert('Selecciona una imagen primero');
+                return;
+            }
+
+            currentImageTarget.src = selectedImageUrl;
+            markDirty();
+            closeImagePicker();
+        }
+
+        // Upload handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            var dropzone = document.getElementById('ipDropzone');
+            var fileInput = document.getElementById('ipFileInput');
+
+            if (dropzone) {
+                dropzone.onclick = function() { fileInput.click(); };
+
+                dropzone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    dropzone.classList.add('dragover');
+                });
+                dropzone.addEventListener('dragleave', function() {
+                    dropzone.classList.remove('dragover');
+                });
+                dropzone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
+                    if (e.dataTransfer.files.length > 0) uploadImage(e.dataTransfer.files[0]);
+                });
+            }
+
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    if (fileInput.files.length > 0) uploadImage(fileInput.files[0]);
+                });
+            }
+
+            // URL preview
+            var urlInput = document.getElementById('ipUrlInput');
+            if (urlInput) {
+                urlInput.addEventListener('input', function() {
+                    var preview = document.getElementById('ipUrlPreview');
+                    if (urlInput.value.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/i)) {
+                        preview.innerHTML = '<img src="' + urlInput.value + '" style="max-width:200px;max-height:150px;border-radius:8px;border:1px solid #e2e8f0;">';
+                        selectedImageUrl = urlInput.value;
+                    } else {
+                        preview.innerHTML = '';
+                    }
+                });
+            }
+
+            // Close image picker on overlay click
+            var overlay = document.getElementById('imagePickerOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeImagePicker();
+                });
+            }
+        });
+
+        function uploadImage(file) {
+            if (file.size > 10 * 1024 * 1024) {
+                alert('La imagen es demasiado grande (max 10MB)');
+                return;
+            }
+
+            var progress = document.getElementById('ipProgress');
+            var bar = document.getElementById('ipProgressBar');
+            progress.classList.add('visible');
+            bar.style.width = '30%';
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/media/upload', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(function(r) {
+                bar.style.width = '80%';
+                return r.json();
+            })
+            .then(function(data) {
+                bar.style.width = '100%';
+                setTimeout(function() {
+                    progress.classList.remove('visible');
+                    bar.style.width = '0';
+                }, 500);
+
+                if (data.url || data.path) {
+                    selectedImageUrl = data.url || data.path;
+                    galleryCache = null; // Invalidate cache
+                    // Auto-apply if there's a target
+                    if (currentImageTarget) {
+                        currentImageTarget.src = selectedImageUrl;
+                        markDirty();
+                        closeImagePicker();
+                    }
+                } else {
+                    alert('Error al subir la imagen');
+                }
+            })
+            .catch(function() {
+                progress.classList.remove('visible');
+                bar.style.width = '0';
+                alert('Error al subir la imagen');
+            });
+        }
+
+        // ============================================================
+        // Effects Panel
+        // ============================================================
+        var effectsPanelOpen = false;
+        var effectsTargetIndex = -1;
+
+        function toggleEffectsPanel() {
+            effectsPanelOpen = !effectsPanelOpen;
+            var panel = document.getElementById('effectsPanel');
+            var main = document.getElementById('mainContent');
+
+            // Close style panel if open
+            if (effectsPanelOpen && stylePanelOpen) {
+                toggleStylePanel();
+            }
+
+            if (effectsPanelOpen) {
+                panel.classList.add('open');
+                main.classList.add('style-panel-open');
+                selectEffectsSection(0);
+            } else {
+                panel.classList.remove('open');
+                if (!stylePanelOpen) main.classList.remove('style-panel-open');
+            }
+        }
+
+        function selectEffectsSection(index) {
+            effectsTargetIndex = index;
+            var wrappers = document.querySelectorAll('.section-wrapper');
+            if (!wrappers[index]) return;
+
+            var secId = wrappers[index].getAttribute('data-section-id');
+            var meta = getSectionMeta(secId);
+            var target = document.getElementById('effectsTarget');
+            target.textContent = (meta ? meta.icon + ' ' + meta.name : secId);
+            target.style.display = 'block';
+
+            // Read current effects from the section's first child element
+            var sectionEl = wrappers[index].querySelector('section, div:not(.section-toolbar)');
+            if (!sectionEl) sectionEl = wrappers[index];
+
+            document.getElementById('effectAnimate').value = sectionEl.getAttribute('data-animate') || '';
+            document.getElementById('effectDelay').value = sectionEl.getAttribute('data-animate-delay') || '';
+            document.getElementById('effectHover').value = sectionEl.getAttribute('data-hover') || '';
+            document.getElementById('effectParallax').value = sectionEl.getAttribute('data-parallax') || '';
+
+            // Highlight in sidebar
+            document.querySelectorAll('.sidebar-item').forEach(function(el, i) {
+                el.classList.toggle('active', i === index);
+            });
+        }
+
+        function applyEffect() {
+            var wrappers = document.querySelectorAll('.section-wrapper');
+            if (effectsTargetIndex < 0 || !wrappers[effectsTargetIndex]) return;
+
+            var sectionEl = wrappers[effectsTargetIndex].querySelector('section, div:not(.section-toolbar)');
+            if (!sectionEl) sectionEl = wrappers[effectsTargetIndex];
+
+            var animate = document.getElementById('effectAnimate').value;
+            var delay = document.getElementById('effectDelay').value;
+            var hover = document.getElementById('effectHover').value;
+            var parallax = document.getElementById('effectParallax').value;
+
+            // Apply or remove attributes
+            if (animate) { sectionEl.setAttribute('data-animate', animate); }
+            else { sectionEl.removeAttribute('data-animate'); }
+
+            if (delay) { sectionEl.setAttribute('data-animate-delay', delay); }
+            else { sectionEl.removeAttribute('data-animate-delay'); }
+
+            if (hover) { sectionEl.setAttribute('data-hover', hover); }
+            else { sectionEl.removeAttribute('data-hover'); }
+
+            if (parallax) { sectionEl.setAttribute('data-parallax', parallax); }
+            else { sectionEl.removeAttribute('data-parallax'); }
+
+            markDirty();
+        }
+
+        // Allow clicking sections to select them for effects
+        document.addEventListener('click', function(e) {
+            if (!effectsPanelOpen) return;
+            var wrapper = e.target.closest('.section-wrapper');
+            if (wrapper) {
+                var idx = Array.from(document.querySelectorAll('.section-wrapper')).indexOf(wrapper);
+                if (idx >= 0) selectEffectsSection(idx);
+            }
+        });
+
+        // ============================================================
         // Init
         // ============================================================
         buildSidebar();
         enableInlineEditing();
+        enableImageClicks();
 
         // Set CSS variables on page preview
         var preview = document.getElementById('pagePreview');

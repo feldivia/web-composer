@@ -939,84 +939,94 @@
                         </div>
                         <div style="font-size:11px; color:#94a3b8; margin-top:8px;">La IA generara colores ideales para tu negocio</div>
                     </div>
-                    <div class="palette-card" data-palette="profesional" data-colors='{"primary":"#6366F1","secondary":"#0EA5E9","accent":"#F59E0B","background":"#FFFFFF","text":"#1E293B"}' onclick="selectPalette(this)">
-                        <div class="palette-name">Profesional</div>
+                    <div class="palette-card" data-palette="corporativo-azul" data-colors='{"primary":"#1E40AF","secondary":"#3B82F6","accent":"#60A5FA","background":"#F8FAFC","text":"#0F172A"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Corporativo Azul</div>
                         <div class="palette-swatches">
-                            <div class="swatch" style="background:#6366F1;"></div>
-                            <div class="swatch" style="background:#0EA5E9;"></div>
-                            <div class="swatch" style="background:#F59E0B;"></div>
-                            <div class="swatch" style="background:#FFFFFF; border-color:rgba(0,0,0,0.15);"></div>
-                            <div class="swatch" style="background:#1E293B;"></div>
-                        </div>
-                    </div>
-                    <div class="palette-card" data-palette="calido" data-colors='{"primary":"#D97706","secondary":"#EA580C","accent":"#DC2626","background":"#FFFBEB","text":"#1C1917"}' onclick="selectPalette(this)">
-                        <div class="palette-name">Calido</div>
-                        <div class="palette-swatches">
-                            <div class="swatch" style="background:#D97706;"></div>
-                            <div class="swatch" style="background:#EA580C;"></div>
-                            <div class="swatch" style="background:#DC2626;"></div>
-                            <div class="swatch" style="background:#FFFBEB; border-color:rgba(0,0,0,0.15);"></div>
-                            <div class="swatch" style="background:#1C1917;"></div>
-                        </div>
-                    </div>
-                    <div class="palette-card" data-palette="elegante" data-colors='{"primary":"#1E293B","secondary":"#B8860B","accent":"#D4AF37","background":"#F8FAFC","text":"#0F172A"}' onclick="selectPalette(this)">
-                        <div class="palette-name">Elegante</div>
-                        <div class="palette-swatches">
-                            <div class="swatch" style="background:#1E293B;"></div>
-                            <div class="swatch" style="background:#B8860B;"></div>
-                            <div class="swatch" style="background:#D4AF37;"></div>
-                            <div class="swatch" style="background:#F8FAFC; border-color:rgba(0,0,0,0.15);"></div>
+                            <div class="swatch" style="background:#1E40AF;"></div>
+                            <div class="swatch" style="background:#3B82F6;"></div>
+                            <div class="swatch" style="background:#60A5FA;"></div>
+                            <div class="swatch" style="background:#F8FAFC; border-color:rgba(0,0,0,0.12);"></div>
                             <div class="swatch" style="background:#0F172A;"></div>
                         </div>
                     </div>
-                    <div class="palette-card" data-palette="natural" data-colors='{"primary":"#059669","secondary":"#065F46","accent":"#92400E","background":"#F0FDF4","text":"#1A2E05"}' onclick="selectPalette(this)">
-                        <div class="palette-name">Natural</div>
+                    <div class="palette-card" data-palette="elegante-oscuro" data-colors='{"primary":"#1E293B","secondary":"#334155","accent":"#94A3B8","background":"#F1F5F9","text":"#0F172A"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Elegante Oscuro</div>
                         <div class="palette-swatches">
-                            <div class="swatch" style="background:#059669;"></div>
-                            <div class="swatch" style="background:#065F46;"></div>
-                            <div class="swatch" style="background:#92400E;"></div>
-                            <div class="swatch" style="background:#F0FDF4; border-color:rgba(0,0,0,0.15);"></div>
-                            <div class="swatch" style="background:#1A2E05;"></div>
+                            <div class="swatch" style="background:#1E293B;"></div>
+                            <div class="swatch" style="background:#334155;"></div>
+                            <div class="swatch" style="background:#94A3B8;"></div>
+                            <div class="swatch" style="background:#F1F5F9; border-color:rgba(0,0,0,0.12);"></div>
+                            <div class="swatch" style="background:#0F172A;"></div>
                         </div>
                     </div>
-                    <div class="palette-card" data-palette="moderno" data-colors='{"primary":"#7C3AED","secondary":"#EC4899","accent":"#06B6D4","background":"#FAF5FF","text":"#1E1B4B"}' onclick="selectPalette(this)">
-                        <div class="palette-name">Moderno</div>
+                    <div class="palette-card" data-palette="indigo-moderno" data-colors='{"primary":"#4F46E5","secondary":"#6366F1","accent":"#A5B4FC","background":"#FAFAFE","text":"#1E1B4B"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Indigo Moderno</div>
                         <div class="palette-swatches">
-                            <div class="swatch" style="background:#7C3AED;"></div>
-                            <div class="swatch" style="background:#EC4899;"></div>
-                            <div class="swatch" style="background:#06B6D4;"></div>
-                            <div class="swatch" style="background:#FAF5FF; border-color:rgba(0,0,0,0.15);"></div>
+                            <div class="swatch" style="background:#4F46E5;"></div>
+                            <div class="swatch" style="background:#6366F1;"></div>
+                            <div class="swatch" style="background:#A5B4FC;"></div>
+                            <div class="swatch" style="background:#FAFAFE; border-color:rgba(0,0,0,0.12);"></div>
                             <div class="swatch" style="background:#1E1B4B;"></div>
                         </div>
                     </div>
-                    <div class="palette-card" data-palette="oceano" data-colors='{"primary":"#0369A1","secondary":"#0891B2","accent":"#F97316","background":"#F0F9FF","text":"#0C4A6E"}' onclick="selectPalette(this)">
-                        <div class="palette-name">Oceano</div>
+                    <div class="palette-card" data-palette="esmeralda" data-colors='{"primary":"#047857","secondary":"#059669","accent":"#6EE7B7","background":"#F0FDF4","text":"#022C22"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Esmeralda</div>
                         <div class="palette-swatches">
-                            <div class="swatch" style="background:#0369A1;"></div>
-                            <div class="swatch" style="background:#0891B2;"></div>
-                            <div class="swatch" style="background:#F97316;"></div>
-                            <div class="swatch" style="background:#F0F9FF; border-color:rgba(0,0,0,0.15);"></div>
-                            <div class="swatch" style="background:#0C4A6E;"></div>
+                            <div class="swatch" style="background:#047857;"></div>
+                            <div class="swatch" style="background:#059669;"></div>
+                            <div class="swatch" style="background:#6EE7B7;"></div>
+                            <div class="swatch" style="background:#F0FDF4; border-color:rgba(0,0,0,0.12);"></div>
+                            <div class="swatch" style="background:#022C22;"></div>
                         </div>
                     </div>
-                    <div class="palette-card" data-palette="nocturno" data-colors='{"primary":"#818CF8","secondary":"#C084FC","accent":"#FB923C","background":"#0F172A","text":"#E2E8F0"}' onclick="selectPalette(this)">
+                    <div class="palette-card" data-palette="borgoña" data-colors='{"primary":"#881337","secondary":"#BE123C","accent":"#FDA4AF","background":"#FFF1F2","text":"#1C1917"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Borgona</div>
+                        <div class="palette-swatches">
+                            <div class="swatch" style="background:#881337;"></div>
+                            <div class="swatch" style="background:#BE123C;"></div>
+                            <div class="swatch" style="background:#FDA4AF;"></div>
+                            <div class="swatch" style="background:#FFF1F2; border-color:rgba(0,0,0,0.12);"></div>
+                            <div class="swatch" style="background:#1C1917;"></div>
+                        </div>
+                    </div>
+                    <div class="palette-card" data-palette="oceano-profundo" data-colors='{"primary":"#0C4A6E","secondary":"#0369A1","accent":"#7DD3FC","background":"#F0F9FF","text":"#082F49"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Oceano Profundo</div>
+                        <div class="palette-swatches">
+                            <div class="swatch" style="background:#0C4A6E;"></div>
+                            <div class="swatch" style="background:#0369A1;"></div>
+                            <div class="swatch" style="background:#7DD3FC;"></div>
+                            <div class="swatch" style="background:#F0F9FF; border-color:rgba(0,0,0,0.12);"></div>
+                            <div class="swatch" style="background:#082F49;"></div>
+                        </div>
+                    </div>
+                    <div class="palette-card" data-palette="grafito-dorado" data-colors='{"primary":"#292524","secondary":"#44403C","accent":"#D97706","background":"#FAFAF9","text":"#1C1917"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Grafito &amp; Dorado</div>
+                        <div class="palette-swatches">
+                            <div class="swatch" style="background:#292524;"></div>
+                            <div class="swatch" style="background:#44403C;"></div>
+                            <div class="swatch" style="background:#D97706;"></div>
+                            <div class="swatch" style="background:#FAFAF9; border-color:rgba(0,0,0,0.12);"></div>
+                            <div class="swatch" style="background:#1C1917;"></div>
+                        </div>
+                    </div>
+                    <div class="palette-card" data-palette="violeta-suave" data-colors='{"primary":"#7C3AED","secondary":"#8B5CF6","accent":"#C4B5FD","background":"#FAF5FF","text":"#2E1065"}' onclick="selectPalette(this)">
+                        <div class="palette-name">Violeta Suave</div>
+                        <div class="palette-swatches">
+                            <div class="swatch" style="background:#7C3AED;"></div>
+                            <div class="swatch" style="background:#8B5CF6;"></div>
+                            <div class="swatch" style="background:#C4B5FD;"></div>
+                            <div class="swatch" style="background:#FAF5FF; border-color:rgba(0,0,0,0.12);"></div>
+                            <div class="swatch" style="background:#2E1065;"></div>
+                        </div>
+                    </div>
+                    <div class="palette-card" data-palette="nocturno" data-colors='{"primary":"#818CF8","secondary":"#6366F1","accent":"#A78BFA","background":"#0F172A","text":"#E2E8F0"}' onclick="selectPalette(this)">
                         <div class="palette-name">Nocturno</div>
                         <div class="palette-swatches">
                             <div class="swatch" style="background:#818CF8;"></div>
-                            <div class="swatch" style="background:#C084FC;"></div>
-                            <div class="swatch" style="background:#FB923C;"></div>
+                            <div class="swatch" style="background:#6366F1;"></div>
+                            <div class="swatch" style="background:#A78BFA;"></div>
                             <div class="swatch" style="background:#0F172A;"></div>
-                            <div class="swatch" style="background:#E2E8F0; border-color:rgba(0,0,0,0.15);"></div>
-                        </div>
-                    </div>
-                    <div class="palette-card" data-palette="coral" data-colors='{"primary":"#E11D48","secondary":"#F43F5E","accent":"#FCD34D","background":"#FFF1F2","text":"#1C1917"}' onclick="selectPalette(this)">
-                        <div class="palette-name">Coral</div>
-                        <div class="palette-swatches">
-                            <div class="swatch" style="background:#E11D48;"></div>
-                            <div class="swatch" style="background:#F43F5E;"></div>
-                            <div class="swatch" style="background:#FCD34D;"></div>
-                            <div class="swatch" style="background:#FFF1F2; border-color:rgba(0,0,0,0.15);"></div>
-                            <div class="swatch" style="background:#1C1917;"></div>
+                            <div class="swatch" style="background:#E2E8F0; border-color:rgba(0,0,0,0.12);"></div>
                         </div>
                     </div>
                 </div>
