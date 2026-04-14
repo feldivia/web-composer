@@ -189,6 +189,7 @@
         .page-preview .wc-navbar-transparent,
         .page-preview .wc-navbar-modern {
             position: relative !important;
+            z-index: 1 !important;
         }
         .page-preview .wc-navbar-transparent {
             background: rgba(15, 23, 42, 0.95) !important;
@@ -218,7 +219,7 @@
             position: absolute;
             top: 8px;
             right: 8px;
-            z-index: 50;
+            z-index: 1010;
             background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 10px;
