@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Builder;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Services\AIService;
+use App\Services\PageBuilderService;
 use App\Services\SectionLibraryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -142,6 +143,8 @@ class AIWizardController extends Controller
                 ],
                 'css' => $combinedCss,
             ]);
+
+            PageBuilderService::createVersion($page, 'Wizard IA');
 
             return response()->json([
                 'success' => true,

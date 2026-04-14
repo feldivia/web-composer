@@ -75,4 +75,12 @@ class Page extends Model
     {
         return $this->hasMany(FormSubmission::class);
     }
+
+    /**
+     * Relación: versiones guardadas de esta página (máximo 6).
+     */
+    public function versions(): HasMany
+    {
+        return $this->hasMany(PageVersion::class)->orderByDesc('created_at');
+    }
 }

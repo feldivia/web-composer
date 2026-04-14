@@ -6,7 +6,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
+use App\Models\PageVersion;
 use App\Models\User;
+use App\Services\PageBuilderService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -204,6 +206,22 @@ class PageResource extends Resource
                     ->url(fn (Page $record): string => route('page.preview', $record), shouldOpenInNewTab: true),
                 Tables\Actions\EditAction::make()
                     ->label('Configurar'),
+                Tables\Actions\Action::make('versions')
+                    ->label('Versiones')
+                    ->icon('heroicon-o-clock')
+                    ->color('gray')
+                    ->modalHeading('Historial de versiones')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Cerrar')
+                    ->modalContent(function (Page $record): \Illuminate\Contracts\View\View {
+                        $versions = $record->versions()->limit(6)->get();
+
+                        return view('filament.pages.page-versions', [
+                            'versions' => $versions,
+                            'page' => $record,
+                        ]);
+                    })
+                    ->visible(fn (Page $record): bool => $record->versions()->exists()),
                 Tables\Actions\Action::make('duplicate')
                     ->label('Duplicar')
                     ->icon('heroicon-o-document-duplicate')

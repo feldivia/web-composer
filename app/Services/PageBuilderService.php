@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Page;
+use App\Models\PageVersion;
 
 /**
  * Servicio para cargar y guardar la estructura de páginas del editor GrapesJS.
@@ -81,6 +82,58 @@ class PageBuilderService
         ];
 
         $page->css = HtmlSanitizerService::sanitizeCss($css);
+
+        $saved = $page->save();
+
+        if ($saved) {
+            self::createVersion($page);
+        }
+
+        return $saved;
+    }
+
+    /**
+     * Crea una versión de la página actual. Máximo 6 versiones, elimina la más antigua.
+     */
+    public static function createVersion(Page $page, ?string $label = null): void
+    {
+        $count = PageVersion::where('page_id', $page->id)->count();
+
+        // Si ya hay 6 versiones, eliminar la más antigua
+        if ($count >= 6) {
+            PageVersion::where('page_id', $page->id)
+                ->orderBy('created_at')
+                ->limit($count - 5)
+                ->delete();
+        }
+
+        PageVersion::create([
+            'page_id' => $page->id,
+            'content' => $page->content,
+            'css' => $page->css,
+            'label' => $label,
+            'created_at' => now(),
+        ]);
+    }
+
+    /**
+     * Restaura una versión específica de la página.
+     */
+    public static function restoreVersion(Page $page, int $versionId): bool
+    {
+        $version = PageVersion::where('page_id', $page->id)
+            ->where('id', $versionId)
+            ->first();
+
+        if (!$version) {
+            return false;
+        }
+
+        // Guardar versión actual antes de restaurar
+        self::createVersion($page, 'Antes de restaurar');
+
+        $page->content = $version->content;
+        $page->css = $version->css;
 
         return $page->save();
     }

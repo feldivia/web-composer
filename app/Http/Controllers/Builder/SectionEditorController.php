@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Builder;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Services\AIService;
+use App\Services\PageBuilderService;
 use App\Services\SectionLibraryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -183,6 +184,8 @@ class SectionEditorController extends Controller
                 'css' => $combinedCss,
             ]);
 
+            PageBuilderService::createVersion($page, 'Sección agregada');
+
             return response()->json([
                 'success' => true,
                 'html' => $renderedHtml,
@@ -286,5 +289,22 @@ class SectionEditorController extends Controller
             'section_icon' => $sectionMeta['icon'],
             'fields' => $fields,
         ]);
+    }
+
+    /**
+     * Restaura una versión anterior de la página.
+     *
+     * POST /builder/{page}/versions/{version}/restore
+     */
+    public function restoreVersion(Page $page, int $version): \Illuminate\Http\RedirectResponse
+    {
+        $restored = PageBuilderService::restoreVersion($page, $version);
+
+        if ($restored) {
+            return redirect()->route('filament.admin.resources.pages.index')
+                ->with('notification', 'Versión restaurada correctamente');
+        }
+
+        return redirect()->back()->with('error', 'No se pudo restaurar la versión');
     }
 }

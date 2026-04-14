@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/builder/{page}/sections/add', [\App\Http\Controllers\Builder\SectionEditorController::class, 'addSection'])->name('builder.sections.add');
     Route::post('/builder/{page}/sections/render', [\App\Http\Controllers\Builder\SectionEditorController::class, 'renderSection'])->name('builder.sections.render');
     Route::get('/builder/{page}/sections/{sectionId}/edit', [\App\Http\Controllers\Builder\SectionEditorController::class, 'editSection'])->name('builder.sections.edit');
+    Route::post('/builder/{page}/versions/{version}/restore', [\App\Http\Controllers\Builder\SectionEditorController::class, 'restoreVersion'])->name('builder.sections.restore');
     Route::post('/api/heartbeat', [\App\Http\Controllers\Api\SessionController::class, 'heartbeat'])->name('api.heartbeat');
 });
 
