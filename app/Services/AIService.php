@@ -368,6 +368,9 @@ REGLAS:
 5. CTAs directos y accionables (2-4 palabras)
 6. Estadisticas y numeros creibles para el tipo de negocio
 7. Si un campo pide 'highlight', devuelve 1-3 palabras del titulo que se puedan resaltar
+8. Para campos 'icon' usar SOLO emojis Unicode (ejemplo: ⚡ 🎯 💡 🏆 📊 🔒 ❤️ 🚀). NUNCA texto descriptivo como identificadores
+9. NUNCA generar URLs de imagenes ni nombres de archivos de imagen. Los campos de tipo imagen se dejan vacios o se omiten
+10. Todos los campos de texto DEBEN tener contenido. NUNCA dejar campos vacios (quote, description, etc.)
 
 Responde SOLO con JSON valido donde las claves de primer nivel son los IDs de seccion:
 {
@@ -383,10 +386,47 @@ Responde SOLO con JSON valido donde las claves de primer nivel son los IDs de se
 
         $result = $this->parseJsonResponse($response, []);
 
-        // Asegurar que cada seccion solicitada tenga al menos un array vacio
+        // Post-validación: rellenar campos vacíos con defaults de la sección
         $output = [];
         foreach ($sections as $sectionId) {
-            $output[$sectionId] = $result[$sectionId] ?? [];
+            $generated = $result[$sectionId] ?? [];
+            $sectionDef = SectionLibraryService::get($sectionId);
+
+            if ($sectionDef !== null) {
+                foreach ($sectionDef['placeholders'] as $key => $placeholder) {
+                    // Saltar campos de imagen (la IA no debe generar URLs)
+                    if ($placeholder['type'] === 'image') {
+                        unset($generated[$key]);
+                        continue;
+                    }
+
+                    $value = $generated[$key] ?? null;
+
+                    // Si está vacío o es un string vacío, usar default
+                    if ($value === null || $value === '' || $value === []) {
+                        $generated[$key] = $placeholder['default'];
+                        continue;
+                    }
+
+                    // Para arrays (testimonials, features, etc.), validar que items no estén vacíos
+                    if (is_array($value) && is_array($placeholder['default'])) {
+                        foreach ($value as $i => &$item) {
+                            if (is_array($item)) {
+                                foreach ($item as $field => $fieldVal) {
+                                    if ($fieldVal === '' || $fieldVal === null) {
+                                        // Buscar default para este campo
+                                        $defaultItem = $placeholder['default'][$i] ?? ($placeholder['default'][0] ?? []);
+                                        $item[$field] = $defaultItem[$field] ?? $fieldVal;
+                                    }
+                                }
+                            }
+                        }
+                        unset($item);
+                    }
+                }
+            }
+
+            $output[$sectionId] = $generated;
         }
 
         return $output;

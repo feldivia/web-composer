@@ -2018,8 +2018,32 @@
                         linksList.appendChild(addBtn);
                         div.appendChild(linksList);
 
-                    } else if (field.type === 'stats' || field.type === 'features' || field.type === 'testimonials' || field.type === 'pricing' || field.type === 'faq' || field.type === 'gallery' || field.type === 'marquee') {
-                        // Complex array types — JSON editor
+                    } else if (field.type === 'stats' || field.type === 'features' || field.type === 'testimonials' || field.type === 'pricing' || field.type === 'faq') {
+                        // Complex array types — dynamic form
+                        var container = document.createElement('div');
+                        container.className = 'edit-array-container';
+                        container.dataset.key = field.key;
+                        container.dataset.type = 'array';
+                        container.dataset.fieldType = field.type;
+
+                        var items = Array.isArray(field.value) ? field.value : [];
+                        items.forEach(function(item, idx) {
+                            container.appendChild(createArrayItemForm(item, field.type, idx));
+                        });
+
+                        var addItemBtn = document.createElement('button');
+                        addItemBtn.className = 'edit-link-add';
+                        addItemBtn.textContent = '+ Agregar elemento';
+                        addItemBtn.style.marginTop = '6px';
+                        addItemBtn.onclick = function() {
+                            var template = getArrayItemTemplate(field.type);
+                            container.insertBefore(createArrayItemForm(template, field.type, container.querySelectorAll('.edit-array-item').length), addItemBtn);
+                        };
+                        container.appendChild(addItemBtn);
+                        div.appendChild(container);
+
+                    } else if (field.type === 'gallery' || field.type === 'marquee') {
+                        // Gallery/Marquee — keep JSON editor
                         var ta2 = document.createElement('textarea');
                         ta2.value = JSON.stringify(field.value, null, 2);
                         ta2.dataset.key = field.key;
@@ -2142,6 +2166,108 @@
             markDirty();
         }
 
+        function getArrayItemTemplate(type) {
+            var templates = {
+                'stats': { number: '100+', label: 'Estadística' },
+                'features': { icon: '⚡', title: 'Título', description: 'Descripción del servicio', link_text: 'Consultar' },
+                'testimonials': { quote: 'Excelente servicio', name: 'Nombre', role: 'Cargo', avatar: '', stars: 5 },
+                'pricing': { name: 'Plan', price: '$0', period: '/mes', features: [{ text: 'Característica', included: true }], cta: 'Elegir', popular: false },
+                'faq': { question: 'Pregunta frecuente', answer: 'Respuesta detallada' },
+            };
+            return templates[type] || {};
+        }
+
+        function createArrayItemForm(item, type, idx) {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'edit-array-item';
+            wrapper.style.cssText = 'border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-bottom:6px;position:relative;background:#fafafa;';
+
+            var removeBtn = document.createElement('button');
+            removeBtn.className = 'edit-link-remove';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.style.cssText = 'position:absolute;top:6px;right:6px;';
+            removeBtn.onclick = function() { wrapper.remove(); };
+            wrapper.appendChild(removeBtn);
+
+            var fields = getFieldsForType(type);
+            fields.forEach(function(f) {
+                var row = document.createElement('div');
+                row.style.marginBottom = '6px';
+
+                var lbl = document.createElement('div');
+                lbl.style.cssText = 'font-size:10px;color:#94a3b8;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.5px;';
+                lbl.textContent = f.label;
+                row.appendChild(lbl);
+
+                if (f.type === 'textarea') {
+                    var ta = document.createElement('textarea');
+                    ta.value = item[f.key] || '';
+                    ta.dataset.field = f.key;
+                    ta.rows = 2;
+                    ta.style.cssText = 'width:100%;padding:6px 8px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;font-family:Inter,sans-serif;resize:vertical;';
+                    row.appendChild(ta);
+                } else if (f.type === 'number') {
+                    var num = document.createElement('input');
+                    num.type = 'number';
+                    num.value = item[f.key] || 0;
+                    num.dataset.field = f.key;
+                    num.min = f.min || 0;
+                    num.max = f.max || 100;
+                    num.style.cssText = 'width:60px;padding:6px 8px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;';
+                    row.appendChild(num);
+                } else if (f.type === 'checkbox') {
+                    var cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.checked = !!item[f.key];
+                    cb.dataset.field = f.key;
+                    row.appendChild(cb);
+                } else {
+                    var inp = document.createElement('input');
+                    inp.type = 'text';
+                    inp.value = item[f.key] || '';
+                    inp.dataset.field = f.key;
+                    inp.style.cssText = 'width:100%;padding:6px 8px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;font-family:Inter,sans-serif;';
+                    row.appendChild(inp);
+                }
+                wrapper.appendChild(row);
+            });
+
+            return wrapper;
+        }
+
+        function getFieldsForType(type) {
+            var map = {
+                'stats': [
+                    { key: 'number', label: 'Número', type: 'text' },
+                    { key: 'label', label: 'Etiqueta', type: 'text' },
+                ],
+                'features': [
+                    { key: 'icon', label: 'Ícono (emoji)', type: 'text' },
+                    { key: 'title', label: 'Título', type: 'text' },
+                    { key: 'description', label: 'Descripción', type: 'textarea' },
+                    { key: 'link_text', label: 'Texto del enlace', type: 'text' },
+                ],
+                'testimonials': [
+                    { key: 'name', label: 'Nombre', type: 'text' },
+                    { key: 'role', label: 'Cargo / Empresa', type: 'text' },
+                    { key: 'quote', label: 'Reseña', type: 'textarea' },
+                    { key: 'stars', label: 'Estrellas (1-5)', type: 'number', min: 1, max: 5 },
+                ],
+                'pricing': [
+                    { key: 'name', label: 'Nombre del plan', type: 'text' },
+                    { key: 'price', label: 'Precio', type: 'text' },
+                    { key: 'period', label: 'Período', type: 'text' },
+                    { key: 'cta', label: 'Texto botón', type: 'text' },
+                    { key: 'popular', label: 'Destacado', type: 'checkbox' },
+                ],
+                'faq': [
+                    { key: 'question', label: 'Pregunta', type: 'text' },
+                    { key: 'answer', label: 'Respuesta', type: 'textarea' },
+                ],
+            };
+            return map[type] || [];
+        }
+
         function createLinkRow(text, url, index) {
             var row = document.createElement('div');
             row.className = 'edit-link-row';
@@ -2219,6 +2345,23 @@
                     content[key] = el.value;
                 } else if (type === 'image') {
                     if (el.value) content[key] = el.value;
+                } else if (type === 'array') {
+                    var items = [];
+                    el.querySelectorAll('.edit-array-item').forEach(function(itemEl) {
+                        var obj = {};
+                        itemEl.querySelectorAll('[data-field]').forEach(function(fieldEl) {
+                            var fKey = fieldEl.dataset.field;
+                            if (fieldEl.type === 'checkbox') {
+                                obj[fKey] = fieldEl.checked;
+                            } else if (fieldEl.type === 'number') {
+                                obj[fKey] = parseInt(fieldEl.value, 10) || 0;
+                            } else {
+                                obj[fKey] = fieldEl.value;
+                            }
+                        });
+                        if (Object.keys(obj).length > 0) items.push(obj);
+                    });
+                    content[key] = items;
                 } else if (type === 'json') {
                     try {
                         content[key] = JSON.parse(el.value);
